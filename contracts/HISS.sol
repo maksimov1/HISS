@@ -1,7 +1,8 @@
 pragma solidity ^0.4.21;
 contract Hiss{
     address owner;
-    function Hiss(){
+
+    constructor () public {
         owner = msg.sender;
     }
     
