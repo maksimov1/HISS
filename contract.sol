@@ -13,7 +13,7 @@ contract Hiss{
     //mapping(string => address) public addressByKey; //не надо  
     mapping(address => string) public keyByAddress;
    
-    mapping(address => bool) public hospitalAcess; //по адресу пациента смотрим доступна ли запись для
+    mapping(address => bool) public hospitalAccess; //по адресу пациента смотрим доступна ли запись для
                                                              //больницы с этим id (uint)
     mapping(address => string) public hospitalSign;
     
@@ -70,7 +70,7 @@ contract Hiss{
     //пациент разрешает добавлять новую запись больнице
     function consentToAddData(address addr) public isPatient{ //сейчас разрешаем на все время потом сделаем(подумаем) на одно
         require(typeOfMember[addr] == typesOfMember.Hospital);
-        hospitalAcess[addr] = true;
+        hospitalAccess[addr] = true;
     }
     
     //больница добавляет данные только с разрешения
