@@ -1,13 +1,13 @@
 {
-  "name": "truffle-init-webpack",
-  "version": "0.0.2",
-  "description": "Frontend example using truffle v3",
+  "name": "hiss",
+  "version": "0.0.3",
+  "description": "Health Insurance Support System Based on Blockchain",
   "scripts": {
     "lint": "eslint ./",
     "build": "webpack",
     "dev": "webpack-dev-server"
   },
-  "author": "Douglas von Kohorn",
+  "author": "Masterchain School Team",
   "license": "MIT",
   "devDependencies": {
     "babel-cli": "^6.22.2",
