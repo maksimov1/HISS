@@ -1,8 +1,17 @@
-/*
-	Telephasic by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
-*/
+//import "jquery";
+//import "jquery.dropotron";
+//import "browser";
+//import "breakpoints";
+//import "util.js";
+
+//import { default as Web3} from 'web3';
+//import { default as contract } from 'truffle-contract';
+
+// Import our contract artifacts and turn them into usable abstractions.
+// import hiss_artifacts from '../../../build/contracts/Hiss.json';
+
+// Hiss is our usable abstraction, which we'll use through the code below.
+//var Hiss = contract(hiss_artifacts);
 
 (function($) {
 
