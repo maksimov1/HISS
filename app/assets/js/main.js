@@ -2,16 +2,16 @@
 //import "jquery.dropotron";
 //import "browser";
 //import "breakpoints";
-//import "util.js";
+import "./util.js";
 
-//import { default as Web3} from 'web3';
-//import { default as contract } from 'truffle-contract';
+import { default as Web3} from 'web3';
+import { default as contract } from 'truffle-contract';
 
 // Import our contract artifacts and turn them into usable abstractions.
-// import hiss_artifacts from '../../../build/contracts/Hiss.json';
+import hiss_artifacts from '../../../build/contracts/Hiss.json';
 
 // Hiss is our usable abstraction, which we'll use through the code below.
-//var Hiss = contract(hiss_artifacts);
+var Hiss = contract(hiss_artifacts);
 
 (function($) {
 
