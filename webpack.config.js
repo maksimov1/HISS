@@ -13,6 +13,7 @@ module.exports = {
       { from: './app/index.html', to: "index.html" },
       { from: './app/patient.html', to: "patient.html" },
       { from: './app/doctor.html', to: "doctor.html" },
+      { from: './app/instruction.html', to: "instruction.html" },
       { from: './app/insurance_company.html', to: "insurance_company.html" },
       { from: './app/assets/css', to: "assets/css" },
       { from: './app/assets/fonts', to: "assets/fonts" },
