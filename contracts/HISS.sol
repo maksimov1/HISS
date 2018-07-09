@@ -1,8 +1,7 @@
 pragma solidity ^0.4.24;
 
-contract Hiss{
+contract Hiss {
     address public owner;
-    uint public total;
     uint public balance;
     
     uint public min = 50000000000000000;
@@ -11,6 +10,8 @@ contract Hiss{
     constructor () public {
         owner = msg.sender;
     }
+
+    enum typeOfMembership {NotRegistered, Patient, Hospital, InsuranceCompany} //тип участия
     
     mapping(address => mapping(uint => string)) public hashes; //получаем хеш данных по адреу и номеру записи
     
@@ -18,28 +19,26 @@ contract Hiss{
     
     mapping(address => bool) public isInsuranceActive; // активна ли страховка для данного пациента
      
-    mapping(address => string) public keyByAddress;
+    mapping(address => string) public keyByAddress; //получаем открытый ключ пациента по адресу
    
-    mapping(address => mapping(address => bool)) public hospitalAccess; //по адресу пациента смотрим доступна ли запись для
-                                                             //больницы с этим id (uint)
-    mapping(address => string) public hospitalSign;
+    mapping(address => mapping(address => bool)) public accessByHospital; //по адресу пациента смотрим доступна ли запись для больницы с этим id (uint)
+
+    mapping(address => string) public hospitalSign; //цифровая подись больниц, для подписи записей, добавляемых в базу (пока не используется)
     
-    enum typesOfMember {NotRegistered, Patient, Hospital, Insurance}
-    
-    mapping(address => typesOfMember) public typeOfMember; 
+    mapping(address => typeOfMembership) public typeByAddress; //получаем тип участия по адресу участника
     
     modifier isHospital() {
-        require(typeOfMember[msg.sender] == typesOfMember.Hospital);
+        require(typeByAddress[msg.sender] == typeOfMembership.Hospital);
         _;
     }
     
     modifier isPatient() {
-        require(typeOfMember[msg.sender] == typesOfMember.Patient);
+        require(typeByAddress[msg.sender] == typeOfMembership.Patient);
         _;
     }
     
-    modifier isInsurance() {
-        require(typeOfMember[msg.sender] == typesOfMember.Insurance);
+    modifier isInsuranceCompany() {
+        require(typeByAddress[msg.sender] == typeOfMembership.InsuranceCompany);
         _;
     }
     
@@ -49,48 +48,49 @@ contract Hiss{
     }
     
     //владелец сервиса добавляет страховые
-    function addInsurance (address addr) public isOwner {
-        typeOfMember[addr] = typesOfMember.Insurance;
+    function addInsuranceCompany (address addr) public isOwner {
+        require(typeByAddress[addr] == typeOfMembership.NotRegistered);
+        typeByAddress[addr] = typeOfMembership.InsuranceCompany;
     }
     
     
     //страховые добавляют пациентов
-    function addPatient (address addr, string publicKey, string firstNote) public payable isInsurance {
+    function addPatient (address addr, string publicKey, string firstNote) public payable isInsuranceCompany {
         require(msg.value >= min && msg.value <= max);
-        require(typeOfMember[addr] == typesOfMember.NotRegistered);
-        typeOfMember[addr] = typesOfMember.Patient;
+        require(typeByAddress[addr] == typeOfMembership.NotRegistered);
+        typeByAddress[addr] = typeOfMembership.Patient;
         keyByAddress[addr] = publicKey;
         hashes[addr][0] = firstNote; // первое посещение
         numberOfNotes[addr]++;
         balance += msg.value;
     }
     //страховые добавляют больницы
-    function addHospital (address addr, string digitalSign) public payable isInsurance {
+    function addHospital (address addr, string digitalSign) public payable isInsuranceCompany {
         require(msg.value >= min && msg.value <= max);
-        require(typeOfMember[addr] == typesOfMember.NotRegistered);
-        typeOfMember[addr] = typesOfMember.Hospital;
+        require(typeByAddress[addr] == typeOfMembership.NotRegistered);
+        typeByAddress[addr] = typeOfMembership.Hospital;
         hospitalSign[addr] = digitalSign;
         balance += msg.value;
     }
     //старховые управляют страховкой пациента
-    function setInsurance (address addr, bool flag) public isInsurance {
-        require(typeOfMember[addr] == typesOfMember.Patient);
+    function setInsuranceStatus (address addr, bool flag) public isInsuranceCompany {
+        require(typeByAddress[addr] == typeOfMembership.Patient);
         isInsuranceActive[addr] = flag;
     }
     
     //пациент разрешает добавлять новую запись больнице
-    function consentToAddData(address addr) public isPatient { //сейчас разрешаем на все время потом сделаем(подумаем) на одно
-        require(typeOfMember[addr] == typesOfMember.Hospital);
-        hospitalAccess[msg.sender][addr] = true;
+    function consentToAddData(address addr) public isPatient {
+        require(typeByAddress[addr] == typeOfMembership.Hospital);
+        accessByHospital[msg.sender][addr] = true;
     }
     
     //больница добавляет данные только с разрешения
     function addNewNote(address addr, string note) public isHospital {
-        require(typeOfMember[addr] == typesOfMember.Patient);
-        require(hospitalAccess[addr][msg.sender] == true);
+        require(typeByAddress[addr] == typeOfMembership.Patient);
+        require(accessByHospital[addr][msg.sender] == true);
         hashes[addr][numberOfNotes[addr]] = note;
         numberOfNotes[addr]++;
-        hospitalAccess[addr][msg.sender] = false;
+        accessByHospital[addr][msg.sender] = false;
     }
     
     //вывод средств на кошелек владельца сервиса
