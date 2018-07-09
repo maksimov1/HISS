@@ -5,25 +5,24 @@ contract Hiss{
     uint public total;
     uint public balance;
     
-    uint public min = 5000000000000000000;
-    uint public max = 10000000000000000000;
+    uint public min = 50000000000000000;
+    uint public max = 100000000000000000;
     
     constructor () public {
         owner = msg.sender;
     }
     
     mapping(address => mapping(uint => string)) public hashes; //получаем хеш данных по адреу и номеру записи
+    
     mapping(address => uint) public numberOfNotes; //количество записей для данного адреса
     
     mapping(address => bool) public isInsuranceActive; // активна ли страховка для данного пациента
-    
-    //mapping(string => address) public addressByKey; //не надо  
+     
     mapping(address => string) public keyByAddress;
    
-    mapping(address => bool) public hospitalAccess; //по адресу пациента смотрим доступна ли запись для
+    mapping(address => mapping(address => bool)) public hospitalAccess; //по адресу пациента смотрим доступна ли запись для
                                                              //больницы с этим id (uint)
     mapping(address => string) public hospitalSign;
-    
     
     enum typesOfMember {NotRegistered, Patient, Hospital, Insurance}
     
@@ -82,15 +81,16 @@ contract Hiss{
     //пациент разрешает добавлять новую запись больнице
     function consentToAddData(address addr) public isPatient { //сейчас разрешаем на все время потом сделаем(подумаем) на одно
         require(typeOfMember[addr] == typesOfMember.Hospital);
-        hospitalAccess[addr] = true;
+        hospitalAccess[msg.sender][addr] = true;
     }
     
     //больница добавляет данные только с разрешения
     function addNewNote(address addr, string note) public isHospital {
         require(typeOfMember[addr] == typesOfMember.Patient);
-        require(hospitalAccess[addr] == true);
+        require(hospitalAccess[addr][msg.sender] == true);
         hashes[addr][numberOfNotes[addr]] = note;
         numberOfNotes[addr]++;
+        hospitalAccess[addr][msg.sender] = false;
     }
     
     //вывод средств на кошелек владельца сервиса
