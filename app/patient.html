@@ -59,9 +59,27 @@
 
 						<p>Текст про то какой классный и удобный сервис.</p>
 						<p>И тут тоже.</p>
-						<input type="button" id="btn" value="Проверить страховку" />
+						<div class="4u 12u$(small)">
+							<input type="button" id="buttonCheck" value="Проверить страховку" />
+							<br>
+							<br>
+							<input type="text" name="hAddress" id="hAddress" value="" placeholder="Введите eth адрес больницы" size="40">
+							<br>
+							<br>
+							<input type="button" id="buttonConsent" value="Добавить разрешение для больницы" />
+							<br>
+							<br>
+							<input type="button" id="buttonNumberOfNotes" value="Количество моих записей" />
+							<br>
+							<br>
+							<input type="text" name="pAddress" id="pAddress" value="" placeholder="Введите eth адрес Пациента" size="40">
+							
+							<input type="text" name="noteNumber" id="noteNumber" value="" placeholder="Введите номер записи" size="25">
+							<br>
+							<br>
+							<input type="button" id="buttonHashes" value="Найти запись" />
+						</div>
 					</article>
-
 				</div>
 			</div>
 		</div>
@@ -92,285 +110,309 @@
 	<script src="assets/js/browser.min.js"></script>
 	<script src="assets/js/breakpoints.min.js"></script>
 	<script>
-		$("#btn").click(function () {
-			if (typeof web3 === 'undefined') {
-				alert("Включите Metamask")
-			}
-			else {
-				const address = "0xA2a45580b22402f6A814bF0d636b633785b38Bf9";
-				const ABI = [
-					{
-						"constant": false,
-						"inputs": [
-							{
-								"name": "addr",
-								"type": "address"
-							},
-							{
-								"name": "digitalSign",
-								"type": "string"
-							}
-						],
-						"name": "addHospital",
-						"outputs": [],
-						"payable": false,
-						"stateMutability": "nonpayable",
-						"type": "function"
-					},
-					{
-						"constant": false,
-						"inputs": [
-							{
-								"name": "addr",
-								"type": "address"
-							}
-						],
-						"name": "addInsurance",
-						"outputs": [],
-						"payable": false,
-						"stateMutability": "nonpayable",
-						"type": "function"
-					},
-					{
-						"constant": false,
-						"inputs": [
-							{
-								"name": "addr",
-								"type": "address"
-							},
-							{
-								"name": "note",
-								"type": "string"
-							}
-						],
-						"name": "addNewNote",
-						"outputs": [],
-						"payable": false,
-						"stateMutability": "nonpayable",
-						"type": "function"
-					},
-					{
-						"constant": false,
-						"inputs": [
-							{
-								"name": "addr",
-								"type": "address"
-							},
-							{
-								"name": "publicKey",
-								"type": "string"
-							},
-							{
-								"name": "firstNote",
-								"type": "string"
-							}
-						],
-						"name": "addPatient",
-						"outputs": [],
-						"payable": false,
-						"stateMutability": "nonpayable",
-						"type": "function"
-					},
-					{
-						"constant": false,
-						"inputs": [
-							{
-								"name": "addr",
-								"type": "address"
-							}
-						],
-						"name": "consentToAddData",
-						"outputs": [],
-						"payable": false,
-						"stateMutability": "nonpayable",
-						"type": "function"
-					},
-					{
-						"constant": false,
-						"inputs": [
-							{
-								"name": "addr",
-								"type": "address"
-							},
-							{
-								"name": "flag",
-								"type": "bool"
-							}
-						],
-						"name": "setInsurance",
-						"outputs": [],
-						"payable": false,
-						"stateMutability": "nonpayable",
-						"type": "function"
-					},
-					{
-						"inputs": [],
-						"payable": false,
-						"stateMutability": "nonpayable",
-						"type": "constructor"
-					},
-					{
-						"constant": true,
-						"inputs": [
-							{
-								"name": "",
-								"type": "address"
-							},
-							{
-								"name": "",
-								"type": "uint256"
-							}
-						],
-						"name": "hashes",
-						"outputs": [
-							{
-								"name": "",
-								"type": "string"
-							}
-						],
-						"payable": false,
-						"stateMutability": "view",
-						"type": "function"
-					},
-					{
-						"constant": true,
-						"inputs": [
-							{
-								"name": "",
-								"type": "address"
-							}
-						],
-						"name": "hospitalAccess",
-						"outputs": [
-							{
-								"name": "",
-								"type": "bool"
-							}
-						],
-						"payable": false,
-						"stateMutability": "view",
-						"type": "function"
-					},
-					{
-						"constant": true,
-						"inputs": [
-							{
-								"name": "",
-								"type": "address"
-							}
-						],
-						"name": "hospitalSign",
-						"outputs": [
-							{
-								"name": "",
-								"type": "string"
-							}
-						],
-						"payable": false,
-						"stateMutability": "view",
-						"type": "function"
-					},
-					{
-						"constant": true,
-						"inputs": [
-							{
-								"name": "",
-								"type": "address"
-							}
-						],
-						"name": "isInsuranceActive",
-						"outputs": [
-							{
-								"name": "",
-								"type": "bool"
-							}
-						],
-						"payable": false,
-						"stateMutability": "view",
-						"type": "function"
-					},
-					{
-						"constant": true,
-						"inputs": [
-							{
-								"name": "",
-								"type": "address"
-							}
-						],
-						"name": "keyByAddress",
-						"outputs": [
-							{
-								"name": "",
-								"type": "string"
-							}
-						],
-						"payable": false,
-						"stateMutability": "view",
-						"type": "function"
-					},
-					{
-						"constant": true,
-						"inputs": [
-							{
-								"name": "",
-								"type": "address"
-							}
-						],
-						"name": "numberOfNotes",
-						"outputs": [
-							{
-								"name": "",
-								"type": "uint256"
-							}
-						],
-						"payable": false,
-						"stateMutability": "view",
-						"type": "function"
-					},
-					{
-						"constant": true,
-						"inputs": [
-							{
-								"name": "",
-								"type": "address"
-							}
-						],
-						"name": "typeOfMember",
-						"outputs": [
-							{
-								"name": "",
-								"type": "uint8"
-							}
-						],
-						"payable": false,
-						"stateMutability": "view",
-						"type": "function"
-					}
-				];
-				var HissContract = web3.eth.contract(ABI).at(address);
-				web3.eth.getAccounts(function (err, accs) {
-					if (err != null) {
-						alert("There was an error fetching your accounts.");
-						return;
-					}
+		if (typeof web3 === 'undefined') {
+			alert("Включите Metamask")
+		}
+		else {
+			const address = "0xA2a45580b22402f6A814bF0d636b633785b38Bf9";
+			const ABI = [
+				{
+					"constant": false,
+					"inputs": [
+						{
+							"name": "addr",
+							"type": "address"
+						},
+						{
+							"name": "digitalSign",
+							"type": "string"
+						}
+					],
+					"name": "addHospital",
+					"outputs": [],
+					"payable": false,
+					"stateMutability": "nonpayable",
+					"type": "function"
+				},
+				{
+					"constant": false,
+					"inputs": [
+						{
+							"name": "addr",
+							"type": "address"
+						}
+					],
+					"name": "addInsurance",
+					"outputs": [],
+					"payable": false,
+					"stateMutability": "nonpayable",
+					"type": "function"
+				},
+				{
+					"constant": false,
+					"inputs": [
+						{
+							"name": "addr",
+							"type": "address"
+						},
+						{
+							"name": "note",
+							"type": "string"
+						}
+					],
+					"name": "addNewNote",
+					"outputs": [],
+					"payable": false,
+					"stateMutability": "nonpayable",
+					"type": "function"
+				},
+				{
+					"constant": false,
+					"inputs": [
+						{
+							"name": "addr",
+							"type": "address"
+						},
+						{
+							"name": "publicKey",
+							"type": "string"
+						},
+						{
+							"name": "firstNote",
+							"type": "string"
+						}
+					],
+					"name": "addPatient",
+					"outputs": [],
+					"payable": false,
+					"stateMutability": "nonpayable",
+					"type": "function"
+				},
+				{
+					"constant": false,
+					"inputs": [
+						{
+							"name": "addr",
+							"type": "address"
+						}
+					],
+					"name": "consentToAddData",
+					"outputs": [],
+					"payable": false,
+					"stateMutability": "nonpayable",
+					"type": "function"
+				},
+				{
+					"constant": false,
+					"inputs": [
+						{
+							"name": "addr",
+							"type": "address"
+						},
+						{
+							"name": "flag",
+							"type": "bool"
+						}
+					],
+					"name": "setInsurance",
+					"outputs": [],
+					"payable": false,
+					"stateMutability": "nonpayable",
+					"type": "function"
+				},
+				{
+					"inputs": [],
+					"payable": false,
+					"stateMutability": "nonpayable",
+					"type": "constructor"
+				},
+				{
+					"constant": true,
+					"inputs": [
+						{
+							"name": "",
+							"type": "address"
+						},
+						{
+							"name": "",
+							"type": "uint256"
+						}
+					],
+					"name": "hashes",
+					"outputs": [
+						{
+							"name": "",
+							"type": "string"
+						}
+					],
+					"payable": false,
+					"stateMutability": "view",
+					"type": "function"
+				},
+				{
+					"constant": true,
+					"inputs": [
+						{
+							"name": "",
+							"type": "address"
+						}
+					],
+					"name": "hospitalAccess",
+					"outputs": [
+						{
+							"name": "",
+							"type": "bool"
+						}
+					],
+					"payable": false,
+					"stateMutability": "view",
+					"type": "function"
+				},
+				{
+					"constant": true,
+					"inputs": [
+						{
+							"name": "",
+							"type": "address"
+						}
+					],
+					"name": "hospitalSign",
+					"outputs": [
+						{
+							"name": "",
+							"type": "string"
+						}
+					],
+					"payable": false,
+					"stateMutability": "view",
+					"type": "function"
+				},
+				{
+					"constant": true,
+					"inputs": [
+						{
+							"name": "",
+							"type": "address"
+						}
+					],
+					"name": "isInsuranceActive",
+					"outputs": [
+						{
+							"name": "",
+							"type": "bool"
+						}
+					],
+					"payable": false,
+					"stateMutability": "view",
+					"type": "function"
+				},
+				{
+					"constant": true,
+					"inputs": [
+						{
+							"name": "",
+							"type": "address"
+						}
+					],
+					"name": "keyByAddress",
+					"outputs": [
+						{
+							"name": "",
+							"type": "string"
+						}
+					],
+					"payable": false,
+					"stateMutability": "view",
+					"type": "function"
+				},
+				{
+					"constant": true,
+					"inputs": [
+						{
+							"name": "",
+							"type": "address"
+						}
+					],
+					"name": "numberOfNotes",
+					"outputs": [
+						{
+							"name": "",
+							"type": "uint256"
+						}
+					],
+					"payable": false,
+					"stateMutability": "view",
+					"type": "function"
+				},
+				{
+					"constant": true,
+					"inputs": [
+						{
+							"name": "",
+							"type": "address"
+						}
+					],
+					"name": "typeOfMember",
+					"outputs": [
+						{
+							"name": "",
+							"type": "uint8"
+						}
+					],
+					"payable": false,
+					"stateMutability": "view",
+					"type": "function"
+				}
+			];
+			var HissContract = web3.eth.contract(ABI).at(address);
+			web3.eth.getAccounts(function (err, accs) {
+				if (err != null) {
+					alert("There was an error fetching your accounts.");
+					return;
+				}
 
-					if (accs.length == 0) {
-						alert("Couldn't get any accounts! Make sure your Ethereum client is configured correctly.");
-						return;
-					}
+				if (accs.length == 0) {
+					alert("Couldn't get any accounts! Make sure your Ethereum client is configured correctly.");
+					return;
+				}
 
-					accounts = accs;
-					account = accounts[0];
+				accounts = accs;
+				account = accounts[0];
+				$("#buttonCheck").click(function () {
+
 					HissContract.isInsuranceActive.call(account, (e, r) => {
-					if (r == true)
-						alert("Страховка действительна");
-					else
-						alert("Страховка не действительна");
-				})
+						if (r == true)
+							alert("Страховка действительна");
+						else
+							alert("Страховка не действительна");
+					})
 				});
-				
-			}
-		})
+				$("#buttonConsent").click(function () {
+					HissContract.consentToAddData(document.getElementById("hAddress").value, (e, myTxHash) => {
+						web3.eth.filter('latest', function (error, result) {
+							web3.eth.getBlock(result, (e, b) => {
+								var t = b.transactions
+								for (var i = 0; i < t.length; i++)
+									if (t[i] == myTxHash) {
+										alert("Аттестат добавлен")
+									}
+							})
+						})
+
+					})
+				});
+				$("#buttonNumberOfNotes").click(function () {
+					HissContract.numberOfNotes.call(account, (e, r) => {
+						alert("Количество записей для вашего адреса: " + r)
+					})
+				});
+				$("#buttonHashes").click(function () {
+					HissContract.hashes.call(document.getElementById("pAddress").value, document.getElementById("noteNumber").value, (e, r) => {
+						alert(r)
+					})
+				});
+			});
+		}
 	</script>
 
 </body>
