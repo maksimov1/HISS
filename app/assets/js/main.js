@@ -1,8 +1,12 @@
-//import "jquery";
-//import "jquery.dropotron";
-//import "browser";
-//import "breakpoints";
+//import "./jquery.min.js";
+
+import { default as dropotron } from "./jquery.dropotron.min.js";
+import "./browser.min.js";
+import { default as breakpoints } from "./breakpoints.min.js";
 import "./util.js";
+
+//import 'bootstrap';
+//import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { default as Web3} from 'web3';
 import { default as contract } from 'truffle-contract';
@@ -44,7 +48,7 @@ var Hiss = contract(hiss_artifacts);
 
 	// Nav.
 
-		// Buton.
+		// Button.
 			$(
 				'<div id="navButton">' +
 					'<a href="#navPanel" class="toggle"></a>' +

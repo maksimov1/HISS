@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require("webpack");
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
@@ -8,7 +9,6 @@ module.exports = {
      filename: 'main.js',
   },
   plugins: [
-    // Copy our app's index.html to the build folder.
     new CopyWebpackPlugin([
       { from: './app/index.html', to: "index.html" },
       { from: './app/patient.html', to: "patient.html" },
@@ -18,19 +18,19 @@ module.exports = {
       { from: './app/assets/css', to: "assets/css" },
       { from: './app/assets/fonts', to: "assets/fonts" },
       { from: './app/images/', to: "images" },
-      { from: './app/assets/js', to: "assets/js" },
-    ])
+      //{ from: './app/assets/js', to: "assets/js" },
+	 ]),
+	 new webpack.ProvidePlugin({
+		'$': "jquery",
+		'jQuery': "jquery",
+		'Popper': 'popper.js'
+    }),
   ],
   module: {
     rules: [
       {
        test: /\.css$/,
        use: [ 'style-loader', 'css-loader' ]
-      },
-      {
-       test: /\.js$/, // запустим загрузчик во всех файлах .js
-       exclude: /node_modules/, // проигнорируем все файлы в папке  node_modules
-       use: 'jshint-loader'
       }
     ],
     loaders: [
