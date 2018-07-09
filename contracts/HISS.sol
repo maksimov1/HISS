@@ -16,14 +16,12 @@ contract Hiss{
     mapping(address => uint) public numberOfNotes; //количество записей для данного адреса
     
     mapping(address => bool) public isInsuranceActive; // активна ли страховка для данного пациента
-    
-    //mapping(string => address) public addressByKey; //не надо  
+     
     mapping(address => string) public keyByAddress;
    
     mapping(address => bool) public hospitalAccess; //по адресу пациента смотрим доступна ли запись для
                                                              //больницы с этим id (uint)
     mapping(address => string) public hospitalSign;
-    
     
     enum typesOfMember {NotRegistered, Patient, Hospital, Insurance}
     
