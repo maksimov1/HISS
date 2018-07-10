@@ -120,8 +120,8 @@
 					],
 					"name": "addHospital",
 					"outputs": [],
-					"payable": false,
-					"stateMutability": "nonpayable",
+					"payable": true,
+					"stateMutability": "payable",
 					"type": "function"
 				},
 				{
@@ -132,7 +132,7 @@
 							"type": "address"
 						}
 					],
-					"name": "addInsurance",
+					"name": "addInsuranceCompany",
 					"outputs": [],
 					"payable": false,
 					"stateMutability": "nonpayable",
@@ -174,8 +174,8 @@
 					],
 					"name": "addPatient",
 					"outputs": [],
-					"payable": false,
-					"stateMutability": "nonpayable",
+					"payable": true,
+					"stateMutability": "payable",
 					"type": "function"
 				},
 				{
@@ -204,7 +204,39 @@
 							"type": "bool"
 						}
 					],
-					"name": "setInsurance",
+					"name": "setInsuranceStatus",
+					"outputs": [],
+					"payable": false,
+					"stateMutability": "nonpayable",
+					"type": "function"
+				},
+				{
+					"constant": false,
+					"inputs": [
+						{
+							"name": "_min",
+							"type": "uint256"
+						},
+						{
+							"name": "_max",
+							"type": "uint256"
+						}
+					],
+					"name": "setLimits",
+					"outputs": [],
+					"payable": false,
+					"stateMutability": "nonpayable",
+					"type": "function"
+				},
+				{
+					"constant": false,
+					"inputs": [
+						{
+							"name": "amount",
+							"type": "uint256"
+						}
+					],
+					"name": "withdrawal",
 					"outputs": [],
 					"payable": false,
 					"stateMutability": "nonpayable",
@@ -225,14 +257,28 @@
 						},
 						{
 							"name": "",
-							"type": "uint256"
+							"type": "address"
 						}
 					],
-					"name": "hashes",
+					"name": "accessByHospital",
 					"outputs": [
 						{
 							"name": "",
-							"type": "string"
+							"type": "bool"
+						}
+					],
+					"payable": false,
+					"stateMutability": "view",
+					"type": "function"
+				},
+				{
+					"constant": true,
+					"inputs": [],
+					"name": "balance",
+					"outputs": [
+						{
+							"name": "",
+							"type": "uint256"
 						}
 					],
 					"payable": false,
@@ -245,13 +291,17 @@
 						{
 							"name": "",
 							"type": "address"
+						},
+						{
+							"name": "",
+							"type": "uint256"
 						}
 					],
-					"name": "hospitalAccess",
+					"name": "hashes",
 					"outputs": [
 						{
 							"name": "",
-							"type": "bool"
+							"type": "string"
 						}
 					],
 					"payable": false,
@@ -317,6 +367,34 @@
 				},
 				{
 					"constant": true,
+					"inputs": [],
+					"name": "max",
+					"outputs": [
+						{
+							"name": "",
+							"type": "uint256"
+						}
+					],
+					"payable": false,
+					"stateMutability": "view",
+					"type": "function"
+				},
+				{
+					"constant": true,
+					"inputs": [],
+					"name": "min",
+					"outputs": [
+						{
+							"name": "",
+							"type": "uint256"
+						}
+					],
+					"payable": false,
+					"stateMutability": "view",
+					"type": "function"
+				},
+				{
+					"constant": true,
 					"inputs": [
 						{
 							"name": "",
@@ -336,13 +414,27 @@
 				},
 				{
 					"constant": true,
+					"inputs": [],
+					"name": "owner",
+					"outputs": [
+						{
+							"name": "",
+							"type": "address"
+						}
+					],
+					"payable": false,
+					"stateMutability": "view",
+					"type": "function"
+				},
+				{
+					"constant": true,
 					"inputs": [
 						{
 							"name": "",
 							"type": "address"
 						}
 					],
-					"name": "typeOfMember",
+					"name": "typeByAddress",
 					"outputs": [
 						{
 							"name": "",
