@@ -425,7 +425,7 @@
 				});
 
 				$("#enableInsurance").click(function () {
-					HissContract.setInsurance.call(
+					HissContract.setInsurance(
 						$('#pAddress').val(),
 						true,
 						(e, myTxHash) => {
@@ -442,7 +442,7 @@
 				});
 
 				$("#disableInsurance").click(function () {
-					HissContract.setInsurance.call(
+					HissContract.setInsurance(
 						$('#pAddress').val(),
 						false,
 						(e, myTxHash) => {
