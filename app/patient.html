@@ -83,7 +83,6 @@
 						<br>
 						<p>Вы можете узнать, сколько записей о вас содержится в базе нажав на «Количество моих записей»</p>
 						<input type="button" id="buttonNumberOfNotes" value="Количество моих записей" />
-<<<<<<< HEAD
 						<br>
 						<br>
 						<hr>
@@ -91,15 +90,13 @@
 						<p>Для просмотра конкретной записи:</p>
 						<p>1. Введите номер записи</p>
 						<p>2. Нажмите «Найти запись»</p>
-=======
 						<br/>
 						<br/>
 						<p>Посмотреть медицинскую запись</p>
 						<p>
-							<textarea class="form-control" placeholder="Приватный ключ пациента" id="pPrivateKey" rows="5"></textarea>
+							<textarea class="form-control" placeholder="Приватный ключ пациента для дешифровки записей" id="pPrivateKey" rows="5"></textarea>
 						</p>
 					   <p>
->>>>>>> f37c49e4ced3fe4599bc97efef3402fbd1571b94
 						<input type="text" name="noteNumber" id="noteNumber" value="" placeholder="Введите номер записи" size="25">
 						</p>
 						<br/>
@@ -527,11 +524,6 @@
 					})
 				});
 				$("#buttonHashes").click(function () {
-<<<<<<< HEAD
-					HissContract.hashes.call(account, document.getElementById("noteNumber").value, (e, r) => {
-						alert(r)
-					})
-=======
 					HissContract.hashes.call(account,
 						$("#noteNumber").val(),
 						(e, r) => {
@@ -540,7 +532,6 @@
                      var uncrypted = crypt.decrypt(r);
 							alert(uncrypted);
 						})
->>>>>>> f37c49e4ced3fe4599bc97efef3402fbd1571b94
 				});
 			});
 		}
