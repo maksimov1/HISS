@@ -67,13 +67,17 @@
 						<br>
 						<br>
 						<input type="button" id="buttonNumberOfNotes" value="Количество моих записей" />
-						<br>
-						<br>
-						<input type="text" name="pAddress" id="pAddress" value="" placeholder="Введите eth адрес Пациента" size="40">
-
+						<br/>
+						<br/>
+						<p>Посмотреть медицинскую запись</p>
+						<p>
+							<textarea class="form-control" placeholder="Приватный ключ пациента" id="pPrivateKey" rows="5"></textarea>
+						</p>
+					   <p>
 						<input type="text" name="noteNumber" id="noteNumber" value="" placeholder="Введите номер записи" size="25">
-						<br>
-						<br>
+						</p>
+						<br/>
+						<br/>
 						<input type="button" id="buttonHashes" value="Найти запись" />
 
 					</article>
@@ -495,9 +499,14 @@
 					})
 				});
 				$("#buttonHashes").click(function () {
-					HissContract.hashes.call(document.getElementById("pAddress").value, document.getElementById("noteNumber").value, (e, r) => {
-						alert(r)
-					})
+					HissContract.hashes.call(account,
+						$("#noteNumber").val(),
+						(e, r) => {
+							var crypt = new JSEncrypt();
+							crypt.setPrivateKey($('#pPrivateKey').val());
+                     var uncrypted = crypt.decrypt(r);
+							alert(uncrypted);
+						})
 				});
 			});
 		}
