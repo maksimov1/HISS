@@ -60,7 +60,7 @@ var Hiss = contract(hiss_artifacts);
 			$(
 				'<div id="navPanel">' +
 					'<nav>' +
-						'<a href="index.html" class="link depth-0">Home</a>' +
+						'<a href="index.html" class="link depth-0">HISS</a>' +
 						$('#nav').navList() +
 					'</nav>' +
 				'</div>'
