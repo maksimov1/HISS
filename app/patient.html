@@ -480,7 +480,8 @@
 					})
 				});
 				$("#buttonConsent").click(function () {
-					HissContract.consentToAddData(document.getElementById("hAddress").value, (e, myTxHash) => {
+					HissContract.consentToAddData($("#hAddress").val(),
+					(e, myTxHash) => {
 						web3.eth.filter('latest', function (error, result) {
 							web3.eth.getBlock(result, (e, b) => {
 								var t = b.transactions
@@ -494,7 +495,8 @@
 					})
 				});
 				$("#buttonNumberOfNotes").click(function () {
-					HissContract.numberOfNotes.call(account, (e, r) => {
+					HissContract.numberOfNotes.call(account,
+					(e, r) => {
 						alert("Количество записей для вашего адреса: " + r)
 					})
 				});

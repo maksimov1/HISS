@@ -56,6 +56,9 @@
 						<p>Текст про то какой классный и удобный сервис.</p>
 						<p>И тут тоже.</p>
 						<input type="text" name="pAddressToAdding" id="pAddressToAdding" value="" placeholder="Введите eth адрес пациента" size="40">
+						<p>
+							<textarea class="form-control" placeholder="Приватный ключ пациента для дешифрации" id="pPrivateKey" rows="5"></textarea>
+						</p>
 						<br>
 						<br>
 						<input type="text" name="note" id="note" value="" placeholder="Введите запись" size="40">
@@ -80,24 +83,25 @@
 
 	<!-- Footer -->
 	<div id="footer-wrapper">
-			<div id="footer" class="container">
-				<header class="major">
-					<h2>Какие-то полезные буквы.</h2>
-					<p>И ещё много
-						<br /> полезных букв.</p>
-				</header>
-	
-			</div>
-			<div id="copyright" class="container">
-				<ul class="menu">
-					<li>&copy; HISS Blockchain Based. All rights reserved. 2018</li>
-				</ul>
-			</div>
+		<div id="footer" class="container">
+			<header class="major">
+				<h2>Какие-то полезные буквы.</h2>
+				<p>И ещё много
+					<br /> полезных букв.</p>
+			</header>
+
 		</div>
+		<div id="copyright" class="container">
+			<ul class="menu">
+				<li>&copy; HISS Blockchain Based. All rights reserved. 2018</li>
+			</ul>
+		</div>
+	</div>
 	</div>
 
 	<!-- Scripts -->
 	<script src="assets/js/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jsencrypt/2.3.1/jsencrypt.min.js"></script>
 	<script src="./main.js"></script>
 	<script>
 		if (typeof web3 === 'undefined') {
@@ -461,27 +465,38 @@
 				accounts = accs;
 				account = accounts[0];
 				$("#buttonpAddNote").click(function () {
-					HissContract.addNewNote(document.getElementById("pAddressToAdding").value, document.getElementById("note").value, (e, myTxHash) => {
-						web3.eth.filter('latest', function (error, result) {
-							web3.eth.getBlock(result, (e, b) => {
-								var t = b.transactions
-								for (var i = 0; i < t.length; i++)
-									if (t[i] == myTxHash) {
-										alert("Запись добавлена")
-									}
+					HissContract.addNewNote(
+						$("#pAddressToAdding").val(),
+						$('#note').val(),
+						(e, myTxHash) => {
+							web3.eth.filter('latest', function (error, result) {
+								web3.eth.getBlock(result, (e, b) => {
+									var t = b.transactions
+									for (var i = 0; i < t.length; i++)
+										if (t[i] == myTxHash) {
+											alert("Запись добавлена")
+										}
+								})
 							})
 						})
-					})
 				});
 				$("#buttonNumberOfNotes").click(function () {
-					HissContract.numberOfNotes.call(document.getElementById("pAddressToAdding").value, (e, r) => {
-						alert("Количество записей у пациента: " + r)
-					})
+					HissContract.numberOfNotes.call(
+						$("#pAddressToAdding").val(),
+						(e, r) => {
+							alert("Количество записей у пациента: " + r)
+						})
 				});
 				$("#buttonHashes").click(function () {
-					HissContract.hashes.call(document.getElementById("pAddressToAdding").value, document.getElementById("noteNumber").value, (e, r) => {
-						alert(r)
-					})
+					HissContract.hashes.call(
+						$("#pAddressToAdding").val(),
+						$("#noteNumber").val(),
+						(e, r) => {
+							var crypt = new JSEncrypt();
+							crypt.setPrivateKey($('#pPrivateKey').val());
+							var uncrypted = crypt.decrypt(r);
+							alert(uncrypted);
+						})
 				});
 			});
 		}
