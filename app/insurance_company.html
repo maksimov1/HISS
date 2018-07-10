@@ -65,10 +65,16 @@
 							<br/>
 							<p>Пациенты</p>
 							<input type="text" name="pAddress" id="pAddress" value="" placeholder="Введите eth адрес пациента" size="40" />
-							<input type="text" name="pPublicKey" id="pPublicKey" value="" placeholder="Публичный ключ пациента" size="40" />
 							<input type="text" name="pFirstNote" id="pFirstNote" value="" placeholder="Информация о пациенте" size="40" />
-							<br/>
-							<button id="addPatient">Подключить пациента</button>
+							<p>
+								<textarea class="form-control" placeholder="Приватный ключ пациента" id="pPrivateKey" rows="5"></textarea>
+							</p>
+							<p>
+								<textarea class="form-control" placeholder="Публичный ключ пациента" id="pPublicKey" rows="5"></textarea>
+							</p>
+							<p>
+								<button id="addPatient">Подключить пациента</button>
+							</p>
 							<br/>
 							<br/>
 							<button id="showPatientStatus">Проверить статус пациента</button>
@@ -100,7 +106,7 @@
 
 	<!-- Scripts -->
 	<script src="assets/js/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/cryptico/0.0.1343522940/cryptico.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jsencrypt/2.3.1/jsencrypt.min.js"></script>
 	<script src="./main.js"></script>
 	<script>
 		if (typeof web3 === 'undefined') {
@@ -468,7 +474,7 @@
 					HissContract.addHospital(
 						$('#hAddress').val(),
 						$('#hDigitalSign').val(),
-						{from:account, value:web3.toWei("0.07",'ether')},
+						{ from: account, value: web3.toWei("0.07", 'ether') },
 						(e, myTxHash) => {
 							web3.eth.filter('latest', function (error, result) {
 								web3.eth.getBlock(result, (e, b) => {
@@ -483,11 +489,21 @@
 				});
 
 				$("#addPatient").click(function () {
+					var crypt = new JSEncrypt({ default_key_size: 1024 });
+					crypt.getKey();
+					var PublicKey = crypt.getPublicKey();
+					var PrivateKey = crypt.getPrivateKey();
+					$('#pPublicKey').val(PublicKey);
+					$('#pPrivateKey').val(PrivateKey);
+
+					var encryptedFirstNote = crypt.encrypt($('#pFirstNote').val());
+					console.log(encryptedFirstNote);
+
 					HissContract.addPatient(
 						$('#pAddress').val(),
-						$('#pPublicKey').val(),
-						$('#pFirstNote').val(),
-						{from:account, value:web3.toWei("0.07",'ether')},
+						PublicKey,
+						encryptedFirstNote,
+						{ from: account, value: web3.toWei("0.07", 'ether') },
 						(e, myTxHash) => {
 							web3.eth.filter('latest', function (error, result) {
 								web3.eth.getBlock(result, (e, b) => {
