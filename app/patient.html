@@ -527,6 +527,11 @@
 					HissContract.hashes.call(account,
 						$("#noteNumber").val(),
 						(e, r) => {
+							console.log(account);
+							console.log($('#pPrivateKey').val());
+							console.log($("#noteNumber").val());
+							console.log(e);
+							console.log(r);
 							var crypt = new JSEncrypt();
 							crypt.setPrivateKey($('#pPrivateKey').val());
                      var uncrypted = crypt.decrypt(r);

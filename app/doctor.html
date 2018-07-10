@@ -465,20 +465,27 @@
 				accounts = accs;
 				account = accounts[0];
 				$("#buttonpAddNote").click(function () {
-					HissContract.addNewNote(
+					HissContract.keyByAddress.call(
 						$("#pAddressToAdding").val(),
-						$('#note').val(),
-						(e, myTxHash) => {
-							web3.eth.filter('latest', function (error, result) {
-								web3.eth.getBlock(result, (e, b) => {
-									var t = b.transactions
-									for (var i = 0; i < t.length; i++)
-										if (t[i] == myTxHash) {
-											alert("Запись добавлена")
-										}
+						(e, r) => {
+							var crypt = new JSEncrypt();
+							crypt.setPublicKey(r);
+							var encryptedNote = crypt.encrypt($('#note').val());
+							HissContract.addNewNote(
+								$("#pAddressToAdding").val(),
+								encryptedNote,
+								(e, myTxHash) => {
+									web3.eth.filter('latest', function (error, result) {
+										web3.eth.getBlock(result, (e, b) => {
+											var t = b.transactions
+											for (var i = 0; i < t.length; i++)
+												if (t[i] == myTxHash) {
+													alert("Запись добавлена")
+												}
+										})
+									})
 								})
-							})
-						})
+						});
 				});
 				$("#buttonNumberOfNotes").click(function () {
 					HissContract.numberOfNotes.call(
