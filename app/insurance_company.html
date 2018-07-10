@@ -1,88 +1,453 @@
 <!DOCTYPE HTML>
 <html>
-	<head>
-		<title>Страховой компании</title>
-		<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-	</head>
-	<body class="left-sidebar is-preload">
-		<div id="page-wrapper">
-	
-			<!-- Header -->
-			<div id="header-wrapper">
-				<div id="header" class="container">
-	
-					<!-- Logo -->
-					<h1 id="logo">
-						<a href="index.html">HISS</a>
-					</h1>
-	
-					<!-- Nav -->
-					<nav id="nav">
-						<ul>
-							<li>
-								<a href="instruction.html">Инструкция</a>
-							</li>
-							<li>
-								<a href="patient.html">Пациенту</a>
-							</li>
-							<li class="break">
-								<a href="doctor.html">Врачу</a>
-							</li>
-							<li>
-								<a href="insurance_company.html">Страховой компании</a>
-							</li>
-						</ul>
-					</nav>
-	
-				</div>
+
+<head>
+	<title>Страховой компании</title>
+	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="assets/css/main.css" />
+</head>
+
+<body class="left-sidebar is-preload">
+	<div id="page-wrapper">
+
+		<!-- Header -->
+		<div id="header-wrapper">
+			<div id="header" class="container">
+
+				<!-- Logo -->
+				<h1 id="logo">
+					<a href="index.html">HISS</a>
+				</h1>
+
+				<!-- Nav -->
+				<nav id="nav">
+					<ul>
+						<li>
+							<a href="instruction.html">Инструкция</a>
+						</li>
+						<li>
+							<a href="patient.html">Пациенту</a>
+						</li>
+						<li class="break">
+							<a href="doctor.html">Врачу</a>
+						</li>
+						<li>
+							<a href="insurance_company.html">Страховой компании</a>
+						</li>
+					</ul>
+				</nav>
+
 			</div>
-	
-			<!-- Main -->
-			<div class="wrapper">
-				<div class="container" id="main">
-					<div class="row gtr-150">
-	
-						<div class="col-8 col-12-narrower imp-narrower"></div>
-	
-						<!-- Content -->
-						<article id="content">
-							<header>
-								<h2>HISS. Страховой компании</h2>
-								<p>Легкий контроль доступа и просмотр записей.</p>
-							</header>
-							<textarea></textarea>
-							<button>Подключить медицинский центр</button>
+		</div>
+
+		<!-- Main -->
+		<div class="wrapper">
+			<div class="container" id="main">
+				<div class="row gtr-150">
+
+					<div class="col-8 col-12-narrower imp-narrower"></div>
+
+					<!-- Content -->
+					<article id="content">
+						<header>
+							<h2>HISS. Страховой компании</h2>
+							<p>Легкий контроль доступа и просмотр записей.</p>
+						</header>
+
+						<div class="4u 12u$(small)">
 							<br/>
-							<button>Проверить страховку пациента</button>
-							<button>Подключить пациента</button>
-						</article>
-					</div>
+							<br/>
+							<p>Медицинские Учереждения</p>
+							<input type="text" name="hAddress" id="hAddress" value="" placeholder="Введите eth адрес больницы" size="40" />
+							<input type="text" name="hDigitalSign" id="hDigitalSign" value="" placeholder="Цифровая подпись больницы" size="40" />
+							<br/>
+							<button id="addHospital">Подключить медицинское учереждение</button>
+							<br/>
+							<br/>
+							<p>Пациенты</p>
+							<input type="text" name="pAddress" id="pAddress" value="" placeholder="Введите eth адрес пациента" size="40" />
+							<input type="text" name="pPublicKey" id="hPublicKey" value="" placeholder="Публичный ключ пациента" size="40" />
+							<input type="text" name="pFirstNote" id="pFirstNote" value="" placeholder="Информация о пациенте" size="40" />
+							<br/>
+							<button id="addPatient">Подключить пациента</button>
+							<br/>
+							<br/>
+							<button id="showPatientStatus">Проверить статус пациента</button>
+							<button id="enableInsurance">Активировать страховку пациента</button>
+							<button id="disableInsurance">Дезактивировать страховку пациента</button>
+						</div>
+					</article>
 				</div>
 			</div>
 		</div>
-	
-		<!-- Footer -->
-		<div id="footer-wrapper">
-			<div id="footer" class="container">
-				<header class="major">
-					<h2>Какие-то полезные буквы.</h2>
-					<p>И ещё много
-						<br /> полезных букв.</p>
-				</header>
-	
-			</div>
-			<div id="copyright" class="container">
-				<ul class="menu">
-					<li>&copy; HISS Blockchain Based. All rights reserved. 2018</li>
-				</ul>
-			</div>
+	</div>
+
+	<!-- Footer -->
+	<div id="footer-wrapper">
+		<div id="footer" class="container">
+			<header class="major">
+				<h2>Какие-то полезные буквы.</h2>
+				<p>И ещё много
+					<br /> полезных букв.</p>
+			</header>
+
 		</div>
+		<div id="copyright" class="container">
+			<ul class="menu">
+				<li>&copy; HISS Blockchain Based. All rights reserved. 2018</li>
+			</ul>
+		</div>
+	</div>
 
-		<!-- Scripts -->
-			<script src="./main.js"></script>
+	<!-- Scripts -->
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/jquery.dropotron.min.js"></script>
+	<script src="assets/js/browser.min.js"></script>
+	<script src="assets/js/breakpoints.min.js"></script>
+	<script>
+		if (typeof web3 === 'undefined') {
+			alert("Включите Metamask")
+		}
+		else {
+			const address = "0xA2a45580b22402f6A814bF0d636b633785b38Bf9";
+			const ABI = [
+				{
+					"constant": false,
+					"inputs": [
+						{
+							"name": "addr",
+							"type": "address"
+						},
+						{
+							"name": "digitalSign",
+							"type": "string"
+						}
+					],
+					"name": "addHospital",
+					"outputs": [],
+					"payable": false,
+					"stateMutability": "nonpayable",
+					"type": "function"
+				},
+				{
+					"constant": false,
+					"inputs": [
+						{
+							"name": "addr",
+							"type": "address"
+						}
+					],
+					"name": "addInsurance",
+					"outputs": [],
+					"payable": false,
+					"stateMutability": "nonpayable",
+					"type": "function"
+				},
+				{
+					"constant": false,
+					"inputs": [
+						{
+							"name": "addr",
+							"type": "address"
+						},
+						{
+							"name": "note",
+							"type": "string"
+						}
+					],
+					"name": "addNewNote",
+					"outputs": [],
+					"payable": false,
+					"stateMutability": "nonpayable",
+					"type": "function"
+				},
+				{
+					"constant": false,
+					"inputs": [
+						{
+							"name": "addr",
+							"type": "address"
+						},
+						{
+							"name": "publicKey",
+							"type": "string"
+						},
+						{
+							"name": "firstNote",
+							"type": "string"
+						}
+					],
+					"name": "addPatient",
+					"outputs": [],
+					"payable": false,
+					"stateMutability": "nonpayable",
+					"type": "function"
+				},
+				{
+					"constant": false,
+					"inputs": [
+						{
+							"name": "addr",
+							"type": "address"
+						}
+					],
+					"name": "consentToAddData",
+					"outputs": [],
+					"payable": false,
+					"stateMutability": "nonpayable",
+					"type": "function"
+				},
+				{
+					"constant": false,
+					"inputs": [
+						{
+							"name": "addr",
+							"type": "address"
+						},
+						{
+							"name": "flag",
+							"type": "bool"
+						}
+					],
+					"name": "setInsurance",
+					"outputs": [],
+					"payable": false,
+					"stateMutability": "nonpayable",
+					"type": "function"
+				},
+				{
+					"inputs": [],
+					"payable": false,
+					"stateMutability": "nonpayable",
+					"type": "constructor"
+				},
+				{
+					"constant": true,
+					"inputs": [
+						{
+							"name": "",
+							"type": "address"
+						},
+						{
+							"name": "",
+							"type": "uint256"
+						}
+					],
+					"name": "hashes",
+					"outputs": [
+						{
+							"name": "",
+							"type": "string"
+						}
+					],
+					"payable": false,
+					"stateMutability": "view",
+					"type": "function"
+				},
+				{
+					"constant": true,
+					"inputs": [
+						{
+							"name": "",
+							"type": "address"
+						}
+					],
+					"name": "hospitalAccess",
+					"outputs": [
+						{
+							"name": "",
+							"type": "bool"
+						}
+					],
+					"payable": false,
+					"stateMutability": "view",
+					"type": "function"
+				},
+				{
+					"constant": true,
+					"inputs": [
+						{
+							"name": "",
+							"type": "address"
+						}
+					],
+					"name": "hospitalSign",
+					"outputs": [
+						{
+							"name": "",
+							"type": "string"
+						}
+					],
+					"payable": false,
+					"stateMutability": "view",
+					"type": "function"
+				},
+				{
+					"constant": true,
+					"inputs": [
+						{
+							"name": "",
+							"type": "address"
+						}
+					],
+					"name": "isInsuranceActive",
+					"outputs": [
+						{
+							"name": "",
+							"type": "bool"
+						}
+					],
+					"payable": false,
+					"stateMutability": "view",
+					"type": "function"
+				},
+				{
+					"constant": true,
+					"inputs": [
+						{
+							"name": "",
+							"type": "address"
+						}
+					],
+					"name": "keyByAddress",
+					"outputs": [
+						{
+							"name": "",
+							"type": "string"
+						}
+					],
+					"payable": false,
+					"stateMutability": "view",
+					"type": "function"
+				},
+				{
+					"constant": true,
+					"inputs": [
+						{
+							"name": "",
+							"type": "address"
+						}
+					],
+					"name": "numberOfNotes",
+					"outputs": [
+						{
+							"name": "",
+							"type": "uint256"
+						}
+					],
+					"payable": false,
+					"stateMutability": "view",
+					"type": "function"
+				},
+				{
+					"constant": true,
+					"inputs": [
+						{
+							"name": "",
+							"type": "address"
+						}
+					],
+					"name": "typeOfMember",
+					"outputs": [
+						{
+							"name": "",
+							"type": "uint8"
+						}
+					],
+					"payable": false,
+					"stateMutability": "view",
+					"type": "function"
+				}
+			];
+			var HissContract = web3.eth.contract(ABI).at(address);
+			web3.eth.getAccounts(function (err, accs) {
+				if (err != null) {
+					alert("There was an error fetching your accounts.");
+					return;
+				}
 
-	</body>
+				if (accs.length == 0) {
+					alert("Couldn't get any accounts! Make sure your Ethereum client is configured correctly.");
+					return;
+				}
+
+				accounts = accs;
+				account = accounts[0];
+
+				$("#addHospital").click(function () {
+					HissContract.addHospital.call(
+						$('#hAddress').val(),
+						$('#hDigitalSign').val(),
+						(err, res) => {
+							if (err != null) {
+								alert("Произошла ошибка при добавлении медицинского учереждения: " + err);
+							} else {
+								alert("Медицинское учереждение успешно добавлено.");
+							}
+						})
+				});
+
+				$("#addPatient").click(function () {
+					HissContract.addPatient.call(
+						$('#pAddress').val(),
+						$('#pPublicKey').val(),
+						$('#pFirstNote').val(),
+						(err, res) => {
+							if (err != null) {
+								alert("Произошла ошибка при добавлении пациента: " + err);
+							} else {
+								alert("Пациент успешно добавлен.");
+							}
+						})
+				});
+
+				$("#showPatientStatus").click(function () {
+					HissContract.isInsuranceActive.call(
+						$('#pAddress').val(),
+						(err, res) => {
+							if (err != null) {
+								alert("Произошла ошибка при проверке статуса пациента: " + err);
+							} else {
+								if (res == true) {
+									alert('Страховка действительна');
+								} else {
+									alert('Страховка не действительна');
+								}
+							}
+						})
+				});
+
+				$("#enableInsurance").click(function () {
+					HissContract.setInsurance.call(
+						$('#pAddress').val(),
+						true,
+						(err, res) => {
+							if (err != null) {
+								alert("Произошла ошибка при активации страховки пациента: " + err);
+							} else {
+								alert('Страховка активирована');
+							}
+						})
+				});
+
+				$("#disableInsurance").click(function () {
+					HissContract.setInsurance.call(
+						$('#pAddress').val(),
+						false,
+						(err, res) => {
+							if (err != null) {
+								alert("Произошла ошибка при дезактивации страховки пациента: " + err);
+							} else {
+								alert('Страховка дезактивирована');
+							}
+						})
+				});
+			});
+		}
+	</script>
+
+</body>
+
 </html>
