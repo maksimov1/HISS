@@ -83,6 +83,7 @@
 						<br>
 						<p>Вы можете узнать, сколько записей о вас содержится в базе нажав на «Количество моих записей»</p>
 						<input type="button" id="buttonNumberOfNotes" value="Количество моих записей" />
+<<<<<<< HEAD
 						<br>
 						<br>
 						<hr>
@@ -90,9 +91,19 @@
 						<p>Для просмотра конкретной записи:</p>
 						<p>1. Введите номер записи</p>
 						<p>2. Нажмите «Найти запись»</p>
+=======
+						<br/>
+						<br/>
+						<p>Посмотреть медицинскую запись</p>
+						<p>
+							<textarea class="form-control" placeholder="Приватный ключ пациента" id="pPrivateKey" rows="5"></textarea>
+						</p>
+					   <p>
+>>>>>>> f37c49e4ced3fe4599bc97efef3402fbd1571b94
 						<input type="text" name="noteNumber" id="noteNumber" value="" placeholder="Введите номер записи" size="25">
-						<br>
-						<br>
+						</p>
+						<br/>
+						<br/>
 						<input type="button" id="buttonHashes" value="Найти запись" />
 						<br>
 						<hr>
@@ -122,15 +133,14 @@
 
 	<!-- Scripts -->
 	<script src="assets/js/jquery.min.js"></script>
-	<script src="assets/js/jquery.dropotron.min.js"></script>
-	<script src="assets/js/browser.min.js"></script>
-	<script src="assets/js/breakpoints.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jsencrypt/2.3.1/jsencrypt.min.js"></script>
+	<script src="./main.js"></script>
 	<script>
 		if (typeof web3 === 'undefined') {
 			alert("Включите Metamask")
 		}
 		else {
-			const address = "0xA2a45580b22402f6A814bF0d636b633785b38Bf9";
+			const address = "0x262178ecdcbea581c06dc1629a39a40757ee3e55";
 			const ABI = [
 				{
 					"constant": false,
@@ -146,8 +156,8 @@
 					],
 					"name": "addHospital",
 					"outputs": [],
-					"payable": false,
-					"stateMutability": "nonpayable",
+					"payable": true,
+					"stateMutability": "payable",
 					"type": "function"
 				},
 				{
@@ -158,7 +168,7 @@
 							"type": "address"
 						}
 					],
-					"name": "addInsurance",
+					"name": "addInsuranceCompany",
 					"outputs": [],
 					"payable": false,
 					"stateMutability": "nonpayable",
@@ -200,8 +210,8 @@
 					],
 					"name": "addPatient",
 					"outputs": [],
-					"payable": false,
-					"stateMutability": "nonpayable",
+					"payable": true,
+					"stateMutability": "payable",
 					"type": "function"
 				},
 				{
@@ -230,7 +240,39 @@
 							"type": "bool"
 						}
 					],
-					"name": "setInsurance",
+					"name": "setInsuranceStatus",
+					"outputs": [],
+					"payable": false,
+					"stateMutability": "nonpayable",
+					"type": "function"
+				},
+				{
+					"constant": false,
+					"inputs": [
+						{
+							"name": "_min",
+							"type": "uint256"
+						},
+						{
+							"name": "_max",
+							"type": "uint256"
+						}
+					],
+					"name": "setLimits",
+					"outputs": [],
+					"payable": false,
+					"stateMutability": "nonpayable",
+					"type": "function"
+				},
+				{
+					"constant": false,
+					"inputs": [
+						{
+							"name": "amount",
+							"type": "uint256"
+						}
+					],
+					"name": "withdrawal",
 					"outputs": [],
 					"payable": false,
 					"stateMutability": "nonpayable",
@@ -251,14 +293,28 @@
 						},
 						{
 							"name": "",
-							"type": "uint256"
+							"type": "address"
 						}
 					],
-					"name": "hashes",
+					"name": "accessByHospital",
 					"outputs": [
 						{
 							"name": "",
-							"type": "string"
+							"type": "bool"
+						}
+					],
+					"payable": false,
+					"stateMutability": "view",
+					"type": "function"
+				},
+				{
+					"constant": true,
+					"inputs": [],
+					"name": "balance",
+					"outputs": [
+						{
+							"name": "",
+							"type": "uint256"
 						}
 					],
 					"payable": false,
@@ -271,13 +327,17 @@
 						{
 							"name": "",
 							"type": "address"
+						},
+						{
+							"name": "",
+							"type": "uint256"
 						}
 					],
-					"name": "hospitalAccess",
+					"name": "hashes",
 					"outputs": [
 						{
 							"name": "",
-							"type": "bool"
+							"type": "string"
 						}
 					],
 					"payable": false,
@@ -343,6 +403,34 @@
 				},
 				{
 					"constant": true,
+					"inputs": [],
+					"name": "max",
+					"outputs": [
+						{
+							"name": "",
+							"type": "uint256"
+						}
+					],
+					"payable": false,
+					"stateMutability": "view",
+					"type": "function"
+				},
+				{
+					"constant": true,
+					"inputs": [],
+					"name": "min",
+					"outputs": [
+						{
+							"name": "",
+							"type": "uint256"
+						}
+					],
+					"payable": false,
+					"stateMutability": "view",
+					"type": "function"
+				},
+				{
+					"constant": true,
 					"inputs": [
 						{
 							"name": "",
@@ -362,13 +450,27 @@
 				},
 				{
 					"constant": true,
+					"inputs": [],
+					"name": "owner",
+					"outputs": [
+						{
+							"name": "",
+							"type": "address"
+						}
+					],
+					"payable": false,
+					"stateMutability": "view",
+					"type": "function"
+				},
+				{
+					"constant": true,
 					"inputs": [
 						{
 							"name": "",
 							"type": "address"
 						}
 					],
-					"name": "typeOfMember",
+					"name": "typeByAddress",
 					"outputs": [
 						{
 							"name": "",
@@ -423,9 +525,20 @@
 					})
 				});
 				$("#buttonHashes").click(function () {
+<<<<<<< HEAD
 					HissContract.hashes.call(account, document.getElementById("noteNumber").value, (e, r) => {
 						alert(r)
 					})
+=======
+					HissContract.hashes.call(account,
+						$("#noteNumber").val(),
+						(e, r) => {
+							var crypt = new JSEncrypt();
+							crypt.setPrivateKey($('#pPrivateKey').val());
+                     var uncrypted = crypt.decrypt(r);
+							alert(uncrypted);
+						})
+>>>>>>> f37c49e4ced3fe4599bc97efef3402fbd1571b94
 				});
 			});
 		}

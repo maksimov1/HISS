@@ -1,12 +1,6 @@
 @import url("font-awesome.min.css");
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300italic,400,400italic,600");
 
-/*
-	Telephasic by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
-*/
-
 html, body, div, span, applet, object,
 iframe, h1, h2, h3, h4, h5, h6, p, blockquote,
 pre, a, abbr, acronym, address, big, cite,
@@ -1900,22 +1894,22 @@ input, select, textarea {
 
 /* Form */
 
-	form .actions {
+	.actions {
 		padding-top: 0;
 	}
 
-	form label {
+	label {
 		display: block;
 		font-weight: 300;
 		color: #52575c;
 		margin: 0 0 0.5em 0;
 	}
 
-	form input[type="text"],
-	form input[type="email"],
-	form input[type="password"],
-	form select,
-	form textarea {
+	input[type="text"],
+	input[type="email"],
+	input[type="password"],
+	select,
+	textarea {
 		-moz-transition: background-color 0.25s ease-in-out;
 		-webkit-transition: background-color 0.25s ease-in-out;
 		-ms-transition: background-color 0.25s ease-in-out;
@@ -1930,35 +1924,35 @@ input, select, textarea {
 		padding: 0.75em;
 	}
 
-		form input[type="text"]:focus,
-		form input[type="email"]:focus,
-		form input[type="password"]:focus,
-		form select:focus,
-		form textarea:focus {
+		input[type="text"]:focus,
+		input[type="email"]:focus,
+		input[type="password"]:focus,
+		select:focus,
+		textarea:focus {
 			background: #fff;
 		}
 
-	form textarea {
+	textarea {
 		min-height: 7em;
 	}
 
-	form ::-webkit-input-placeholder {
+	::-webkit-input-placeholder {
 		color: #555 !important;
 	}
 
-	form :-moz-placeholder {
+	:-moz-placeholder {
 		color: #555 !important;
 	}
 
-	form ::-moz-placeholder {
+	::-moz-placeholder {
 		color: #555 !important;
 	}
 
-	form :-ms-input-placeholder {
+	:-ms-input-placeholder {
 		color: #555 !important;
 	}
 
-	form ::-moz-focus-inner {
+	::-moz-focus-inner {
 		border: 0;
 	}
 

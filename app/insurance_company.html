@@ -56,19 +56,29 @@
 						<div class="4u 12u$(small)">
 							<br/>
 							<br/>
-							<p>Медицинские Учереждения</p>
+							<p>Медицинские Учреждения</p>
 							<input type="text" name="hAddress" id="hAddress" value="" placeholder="Введите eth адрес больницы" size="40" />
 							<input type="text" name="hDigitalSign" id="hDigitalSign" value="" placeholder="Цифровая подпись больницы" size="40" />
 							<br/>
-							<button id="addHospital">Подключить медицинское учереждение</button>
+							<button id="addHospital">Подключить медицинское учреждение</button>
 							<br/>
 							<br/>
 							<p>Пациенты</p>
 							<input type="text" name="pAddress" id="pAddress" value="" placeholder="Введите eth адрес пациента" size="40" />
+<<<<<<< HEAD
 							<input type="text" name="pPublicKey" id="pPublicKey" value="" placeholder="Публичный ключ пациента" size="40" />
+=======
+>>>>>>> f37c49e4ced3fe4599bc97efef3402fbd1571b94
 							<input type="text" name="pFirstNote" id="pFirstNote" value="" placeholder="Информация о пациенте" size="40" />
-							<br/>
-							<button id="addPatient">Подключить пациента</button>
+							<p>
+								<textarea class="form-control" placeholder="Приватный ключ пациента" id="pPrivateKey" rows="5"></textarea>
+							</p>
+							<p>
+								<textarea class="form-control" placeholder="Публичный ключ пациента" id="pPublicKey" rows="5"></textarea>
+							</p>
+							<p>
+								<button id="addPatient">Подключить пациента</button>
+							</p>
 							<br/>
 							<br/>
 							<button id="showPatientStatus">Проверить статус пациента</button>
@@ -100,15 +110,14 @@
 
 	<!-- Scripts -->
 	<script src="assets/js/jquery.min.js"></script>
-	<script src="assets/js/jquery.dropotron.min.js"></script>
-	<script src="assets/js/browser.min.js"></script>
-	<script src="assets/js/breakpoints.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jsencrypt/2.3.1/jsencrypt.min.js"></script>
+	<script src="./main.js"></script>
 	<script>
 		if (typeof web3 === 'undefined') {
 			alert("Включите Metamask")
 		}
 		else {
-			const address = "0xA2a45580b22402f6A814bF0d636b633785b38Bf9";
+			const address = "0x262178ecdcbea581c06dc1629a39a40757ee3e55";
 			const ABI = [
 				{
 					"constant": false,
@@ -124,8 +133,8 @@
 					],
 					"name": "addHospital",
 					"outputs": [],
-					"payable": false,
-					"stateMutability": "nonpayable",
+					"payable": true,
+					"stateMutability": "payable",
 					"type": "function"
 				},
 				{
@@ -136,7 +145,7 @@
 							"type": "address"
 						}
 					],
-					"name": "addInsurance",
+					"name": "addInsuranceCompany",
 					"outputs": [],
 					"payable": false,
 					"stateMutability": "nonpayable",
@@ -178,8 +187,8 @@
 					],
 					"name": "addPatient",
 					"outputs": [],
-					"payable": false,
-					"stateMutability": "nonpayable",
+					"payable": true,
+					"stateMutability": "payable",
 					"type": "function"
 				},
 				{
@@ -208,7 +217,39 @@
 							"type": "bool"
 						}
 					],
-					"name": "setInsurance",
+					"name": "setInsuranceStatus",
+					"outputs": [],
+					"payable": false,
+					"stateMutability": "nonpayable",
+					"type": "function"
+				},
+				{
+					"constant": false,
+					"inputs": [
+						{
+							"name": "_min",
+							"type": "uint256"
+						},
+						{
+							"name": "_max",
+							"type": "uint256"
+						}
+					],
+					"name": "setLimits",
+					"outputs": [],
+					"payable": false,
+					"stateMutability": "nonpayable",
+					"type": "function"
+				},
+				{
+					"constant": false,
+					"inputs": [
+						{
+							"name": "amount",
+							"type": "uint256"
+						}
+					],
+					"name": "withdrawal",
 					"outputs": [],
 					"payable": false,
 					"stateMutability": "nonpayable",
@@ -229,14 +270,28 @@
 						},
 						{
 							"name": "",
-							"type": "uint256"
+							"type": "address"
 						}
 					],
-					"name": "hashes",
+					"name": "accessByHospital",
 					"outputs": [
 						{
 							"name": "",
-							"type": "string"
+							"type": "bool"
+						}
+					],
+					"payable": false,
+					"stateMutability": "view",
+					"type": "function"
+				},
+				{
+					"constant": true,
+					"inputs": [],
+					"name": "balance",
+					"outputs": [
+						{
+							"name": "",
+							"type": "uint256"
 						}
 					],
 					"payable": false,
@@ -249,13 +304,17 @@
 						{
 							"name": "",
 							"type": "address"
+						},
+						{
+							"name": "",
+							"type": "uint256"
 						}
 					],
-					"name": "hospitalAccess",
+					"name": "hashes",
 					"outputs": [
 						{
 							"name": "",
-							"type": "bool"
+							"type": "string"
 						}
 					],
 					"payable": false,
@@ -321,6 +380,34 @@
 				},
 				{
 					"constant": true,
+					"inputs": [],
+					"name": "max",
+					"outputs": [
+						{
+							"name": "",
+							"type": "uint256"
+						}
+					],
+					"payable": false,
+					"stateMutability": "view",
+					"type": "function"
+				},
+				{
+					"constant": true,
+					"inputs": [],
+					"name": "min",
+					"outputs": [
+						{
+							"name": "",
+							"type": "uint256"
+						}
+					],
+					"payable": false,
+					"stateMutability": "view",
+					"type": "function"
+				},
+				{
+					"constant": true,
 					"inputs": [
 						{
 							"name": "",
@@ -340,13 +427,27 @@
 				},
 				{
 					"constant": true,
+					"inputs": [],
+					"name": "owner",
+					"outputs": [
+						{
+							"name": "",
+							"type": "address"
+						}
+					],
+					"payable": false,
+					"stateMutability": "view",
+					"type": "function"
+				},
+				{
+					"constant": true,
 					"inputs": [
 						{
 							"name": "",
 							"type": "address"
 						}
 					],
-					"name": "typeOfMember",
+					"name": "typeByAddress",
 					"outputs": [
 						{
 							"name": "",
@@ -377,13 +478,14 @@
 					HissContract.addHospital(
 						$('#hAddress').val(),
 						$('#hDigitalSign').val(),
+						{ from: account, value: web3.toWei("0.07", 'ether') },
 						(e, myTxHash) => {
 							web3.eth.filter('latest', function (error, result) {
 								web3.eth.getBlock(result, (e, b) => {
 									var t = b.transactions
 									for (var i = 0; i < t.length; i++)
 										if (t[i] == myTxHash) {
-											alert("Медицинское учереждение успешно добавлено");
+											alert("Медицинское учреждение успешно добавлено");
 										}
 								});
 							});
@@ -391,13 +493,32 @@
 				});
 
 				$("#addPatient").click(function () {
+<<<<<<< HEAD
 					HissContract.addPatient( $('#pAddress').val(), $('#pPublicKey').val(), $('#pFirstNote').val(), (e, myTxHash) => {
+=======
+					var crypt = new JSEncrypt({ default_key_size: 1024 });
+					crypt.getKey();
+					var PublicKey = crypt.getPublicKey();
+					var PrivateKey = crypt.getPrivateKey();
+					$('#pPublicKey').val(PublicKey);
+					$('#pPrivateKey').val(PrivateKey);
+
+					var encryptedFirstNote = crypt.encrypt($('#pFirstNote').val());
+					console.log(encryptedFirstNote);
+
+					HissContract.addPatient(
+						$('#pAddress').val(),
+						PublicKey,
+						encryptedFirstNote,
+						{ from: account, value: web3.toWei("0.07", 'ether') },
+						(e, myTxHash) => {
+>>>>>>> f37c49e4ced3fe4599bc97efef3402fbd1571b94
 							web3.eth.filter('latest', function (error, result) {
 								web3.eth.getBlock(result, (e, b) => {
 									var t = b.transactions
 									for (var i = 0; i < t.length; i++)
 										if (t[i] == myTxHash) {
-											alert("Пациента успешно добавлен");
+											alert("Пациент успешно добавлен");
 										}
 								});
 							});
@@ -421,7 +542,7 @@
 				});
 
 				$("#enableInsurance").click(function () {
-					HissContract.setInsurance(
+					HissContract.setInsuranceStatus(
 						$('#pAddress').val(),
 						true,
 						(e, myTxHash) => {
@@ -438,7 +559,7 @@
 				});
 
 				$("#disableInsurance").click(function () {
-					HissContract.setInsurance(
+					HissContract.setInsuranceStatus(
 						$('#pAddress').val(),
 						false,
 						(e, myTxHash) => {
@@ -447,7 +568,7 @@
 									var t = b.transactions
 									for (var i = 0; i < t.length; i++)
 										if (t[i] == myTxHash) {
-											alert("Страховка дезактивирована");
+											alert("Страховка деактивирована");
 										}
 								});
 							});
