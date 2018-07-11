@@ -50,32 +50,57 @@
 					<article id="content">
 						<header>
 							<h2>HISS. Врачу</h2>
-							<p>Легкий контроль доступа и просмотр записей.</p>
+							<p>Легкий контроль доступа и просмотр записей.
+								<ul>
+									<li>Только проверенные пациенты с валидной страховкой.</li>
+									<li>Удобное соглашение с пациентами на предоставление медицинских услуг.</li>
+									<li>Защищенная и достоверная база записей о пациентах, добавление новых записей о посещениях.</li>
+								</ul>
+							</p>
 						</header>
-
-						<p>Текст про то какой классный и удобный сервис.</p>
-						<p>И тут тоже.</p>
-						<input type="text" name="pAddressToAdding" id="pAddressToAdding" value="" placeholder="Введите eth адрес пациента" size="40">
+						<h3>Перед выполнением всех операций удостоверьтесь, что у вас работает Metamask.</h3>
 						<br>
+						<hr>
 						<br>
-						<input type="text" name="note" id="note" value="" placeholder="Введите запись" size="40">
-						<br>
-						<br>
-						<input type="button" id="buttonpAddNote" value="Добавить запись" />
-						<br>
-						<br>
-						<input type="button" id="buttonNumberOfNotes" value="Количество записей пациента" />
-						<br>
-						<br>
-						<input type="text" name="noteNumber" id="noteNumber" value="" placeholder="Введите номер записи" size="40">
-						<p>
-							<textarea class="form-control" placeholder="Приватный ключ пациента для дешифрации записей" id="pPrivateKey" rows="5"></textarea>
-						</p>
-						<br>
-						<br>
-						<input type="button" id="buttonHashes" value="Найти запись" />
+						<div class="4u 12u$(small)">
+							<p>Для добавления новой записи о пациенте:</p>
+							<p>1. Введите eth адрес пациента</p>
+							<p>2. Введите текст записи в поле</p>
+							<p>3. Нажмите «Добавить запись»</p>
+							<input type="text" name="pAddressToAdding" id="pAddressToAdding1" value="" placeholder="Введите eth адрес пациента" size="40">
+							<br>
+							<input type="text" name="note" id="note" value="" placeholder="Введите запись" size="40">
+							<br>
+							<input type="button" id="buttonpAddNote" value="Добавить запись" />
+							<br>
+							<br>
+							<hr>
+							<br>
+							<p>Для того, чтобы узнать, сколько записей о пациенте содержится в базе:</p>
+							<p>1. Введите eth адрес пациента</p>
+							<p>2. Нажмите «Количество записей пациента»</p>
+							<input type="text" name="pAddressToAdding" id="pAddressToAdding2" value="" placeholder="Введите eth адрес пациента" size="40">
+							<br>
+							<input type="button" id="buttonNumberOfNotes" value="Количество записей пациента" />
+							<br>
+							<br>
+							<hr>
+							<br>
+							<p>Для поиска конкретной записи о пациенте:</p>
+							<p>1. Введите eth адрес пациента</p>
+							<p>2. Введите номер записи</p>
+							<p>3. Нажмите «Найти запись»</p>
+							<input type="text" name="pAddressToAdding" id="pAddressToAdding3" value="" placeholder="Введите eth адрес пациента" size="40">
+							<br>
+							<input type="text" name="noteNumber" id="noteNumber" value="" placeholder="Введите номер записи" size="40">
+							<br>
+							<p>
+								<textarea class="form-control" placeholder="Приватный ключ пациента для дешифрации записей" id="pPrivateKey" rows="5"></textarea>
+							</p>
+							<br>
+							<input type="button" id="buttonHashes" value="Найти запись" />
+						</div>
 					</article>
-
 				</div>
 			</div>
 		</div>
@@ -85,9 +110,11 @@
 	<div id="footer-wrapper">
 		<div id="footer" class="container">
 			<header class="major">
-				<h2>Какие-то полезные буквы.</h2>
-				<p>И ещё много
-					<br /> полезных букв.</p>
+				<h2>HISS объединяет пациентов, медицинские учреждения и страховые компании.</h2>
+				<p>
+					Подлинность и неизменяемость данных гарантируется технологией блокчейн.
+					<br /> Вся информация обезличена и хранится в зашифрованном виде в распределенной базе.
+				</p>
 			</header>
 
 		</div>
@@ -472,7 +499,7 @@
 							crypt.setPublicKey(r);
 							var encryptedNote = crypt.encrypt($('#note').val());
 							HissContract.addNewNote(
-								$("#pAddressToAdding").val(),
+								$("#pAddressToAdding1").val(),
 								encryptedNote,
 								(e, myTxHash) => {
 									web3.eth.filter('latest', function (error, result) {
@@ -489,14 +516,14 @@
 				});
 				$("#buttonNumberOfNotes").click(function () {
 					HissContract.numberOfNotes.call(
-						$("#pAddressToAdding").val(),
+						$("#pAddressToAdding2").val(),
 						(e, r) => {
 							alert("Количество записей у пациента: " + r)
 						})
 				});
 				$("#buttonHashes").click(function () {
 					HissContract.hashes.call(
-						$("#pAddressToAdding").val(),
+						$("#pAddressToAdding3").val(),
 						$("#noteNumber").val(),
 						(e, r) => {
 							var crypt = new JSEncrypt();

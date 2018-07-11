@@ -48,14 +48,13 @@
 			<div class="container" id="main">
 				<div class="row gtr-150">
 					<!-- Content -->
-					
 					<article id="content">
 						<header>
 							<h2>HISS. Пациенту</h2>
 							<p>Легкий контроль доступа и просмотр записей.
 								<ul>
 									<li>Данные о вас могут быть получены только с вашего согласия.</li>
-									<li>Только вы можете дать больнице разрешение на добавление новой записи.</li>
+									<li>Только вы можете дать разрешение на добавление новой записи медицинскому учреждению.</li>
 									<li>Одно разрешение – одна запись.</li>
 								</ul>
 							</p>
@@ -64,46 +63,40 @@
 						<br>
 						<hr>
 						<br>
-						<p>Вы можете узнать о состоянии вашего страхового полиса, нажав на «Проверить страховку».</p>
-						<input type="button" id="buttonCheck" value="Проверить страховку" />
-						<br>
-						<br>
-						<hr>
-						<br>
-						<p>Для разрешения медучреждению добавить запись в вашу историю:</p>
-						<p>1. Введите адрес больницы в поле</p>
-						<p>2. Нажмите «Добавить разрешение для больницы»</p>
-						<input type="text" name="hAddress" id="hAddress" value="" placeholder="Введите eth адрес больницы" size="40">
-						<br>
-						<br>
-						<input type="button" id="buttonConsent" value="Добавить разрешение для больницы" />
-						<br>
-						<br>
-						<hr>
-						<br>
-						<p>Вы можете узнать, сколько записей о вас содержится в базе нажав на «Количество моих записей»</p>
-						<input type="button" id="buttonNumberOfNotes" value="Количество моих записей" />
-						<br>
-						<br>
-						<hr>
-						<br>
-						<p>Для просмотра конкретной записи:</p>
-						<p>1. Введите номер записи</p>
-						<p>2. Нажмите «Найти запись»</p>
-						<br/>
-						<br/>
-						<p>Посмотреть медицинскую запись</p>
-						<p>
-							<textarea class="form-control" placeholder="Приватный ключ пациента для дешифровки записей" id="pPrivateKey" rows="5"></textarea>
-						</p>
-					   <p>
-						<input type="text" name="noteNumber" id="noteNumber" value="" placeholder="Введите номер записи" size="25">
-						</p>
-						<br/>
-						<br/>
-						<input type="button" id="buttonHashes" value="Найти запись" />
-						<br>
-						<hr>
+						<div class="4u 12u$(small)">
+							<p>Вы можете узнать о состоянии вашего страхового полиса, нажав на «Проверить страховку».</p>
+							<input type="button" id="buttonCheck" value="Проверить страховку" />
+							<br>
+							<br>
+							<hr>
+							<br>
+							<p>Для разрешения медучреждению добавить запись в вашу историю:</p>
+							<p>1. Введите адрес медицинского учреждения в поле</p>
+							<p>2. Нажмите «Добавить разрешение для медицинского учреждения</p>
+							<input type="text" name="hAddress" id="hAddress" value="" placeholder="Введите eth адрес медицинского учреждения" size="40">
+							<br>
+							<input type="button" id="buttonConsent" value="Добавить разрешение для медицинского учреждения" />
+							<br>
+							<br>
+							<hr>
+							<br>
+							<p>Вы можете узнать, сколько записей о вас содержится в базе нажав на «Количество моих записей»</p>
+							<input type="button" id="buttonNumberOfNotes" value="Количество моих записей" />
+							<br>
+							<br>
+							<hr>
+							<br>
+							<p>Для просмотра конкретной записи:</p>
+							<p>1. Введите номер записи</p>
+							<p>2. Нажмите «Найти запись»</p>
+								<textarea class="form-control" placeholder="Приватный ключ пациента для дешифровки записей" id="pPrivateKey" rows="5"></textarea>
+							<br>
+							<input type="text" name="noteNumber" id="noteNumber" value="" placeholder="Введите номер записи" size="25">
+							<br>
+							<input type="button" id="buttonHashes" value="Найти запись" />
+							<br>
+							<hr>
+						</div>
 					</article>
 				</div>
 			</div>
@@ -114,9 +107,11 @@
 	<div id="footer-wrapper">
 		<div id="footer" class="container">
 			<header class="major">
-				<h2>HISS объединяет пациентов, больницы и страховые компании.</h2>
-				<p>Подлинность и неизменяемость данных гарантируется технологией блокчейн.
-					<br /> Вся информация обезличена и хранится в зашифрованном виде в распределенной базе.</p>
+				<h2>HISS объединяет пациентов, медицинские учреждения и страховые компании.</h2>
+				<p>
+					Подлинность и неизменяемость данных гарантируется технологией блокчейн.
+					<br /> Вся информация обезличена и хранится в зашифрованном виде в распределенной базе.
+				</p>
 			</header>
 		</div>
 		<div id="copyright" class="container">
@@ -504,24 +499,24 @@
 				});
 				$("#buttonConsent").click(function () {
 					HissContract.consentToAddData($("#hAddress").val(),
-					(e, myTxHash) => {
-						web3.eth.filter('latest', function (error, result) {
-							web3.eth.getBlock(result, (e, b) => {
-								var t = b.transactions
-								for (var i = 0; i < t.length; i++)
-									if (t[i] == myTxHash) {
-										alert("Добавлен")
-									}
+						(e, myTxHash) => {
+							web3.eth.filter('latest', function (error, result) {
+								web3.eth.getBlock(result, (e, b) => {
+									var t = b.transactions
+									for (var i = 0; i < t.length; i++)
+										if (t[i] == myTxHash) {
+											alert("Добавлен")
+										}
+								})
 							})
-						})
 
-					})
+						})
 				});
 				$("#buttonNumberOfNotes").click(function () {
 					HissContract.numberOfNotes.call(account,
-					(e, r) => {
-						alert("Количество записей для вашего адреса: " + r)
-					})
+						(e, r) => {
+							alert("Количество записей для вашего адреса: " + r)
+						})
 				});
 				$("#buttonHashes").click(function () {
 					HissContract.hashes.call(account,
@@ -534,7 +529,7 @@
 							console.log(r);
 							var crypt = new JSEncrypt();
 							crypt.setPrivateKey($('#pPrivateKey').val());
-                     var uncrypted = crypt.decrypt(r);
+							var uncrypted = crypt.decrypt(r);
 							alert(uncrypted);
 						})
 				});
