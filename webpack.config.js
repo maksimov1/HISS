@@ -18,12 +18,10 @@ module.exports = {
       { from: './app/assets/css', to: "assets/css" },
       { from: './app/assets/fonts', to: "assets/fonts" },
       { from: './app/images/', to: "images" },
-      { from: './app/assets/js', to: "assets/js" },
 	 ]),
 	 new webpack.ProvidePlugin({
 		'$': "jquery",
-		'jQuery': "jquery",
-		'Popper': 'popper.js'
+		'jQuery': "jquery"
     }),
   ],
   module: {

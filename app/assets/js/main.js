@@ -104,6 +104,7 @@ import HissContractDesc from '../../../build/contracts/Hiss.json';
 			var accounts = accs;
 			var account = accounts[0];
 
+			// Doctor
 			$("#DoctorButtonPAddNote").click(function () {
 				HissContract.keyByAddress.call(
 					$("#DoctorPAddressToAdding1").val(),
@@ -160,7 +161,7 @@ import HissContractDesc from '../../../build/contracts/Hiss.json';
 			$("#DoctorButtonPHashes").click(function () {
 				HissContract.hashes.call(
 					$("#DoctorPAddressToAdding4").val(),
-					$("#DoctorNoteNumber").val() + 1,
+					$("#DoctorNoteNumber").val() - 1,
 					(e, r) => {
 						var crypt = new JSEncrypt();
 						crypt.setPrivateKey($('#DoctorPPrivateKey').val());
@@ -168,7 +169,142 @@ import HissContractDesc from '../../../build/contracts/Hiss.json';
 						alert(uncrypted);
 					})
 			});
-		}
-		)
+
+			// Insurance
+			$("#InsuranceButtonAddHospital").click(function () {
+				HissContract.addHospital(
+					$('#InsuranceHAddress').val(),
+					$('#InsuranceHDigitalSign').val(),
+					{ from: account, value: web3.toWei("0.07", 'ether') },
+					(e, myTxHash) => {
+						web3.eth.filter('latest', function (error, result) {
+							web3.eth.getBlock(result, (e, b) => {
+								var t = b.transactions
+								for (var i = 0; i < t.length; i++)
+									if (t[i] == myTxHash) {
+										alert("Медицинское учреждение успешно добавлено");
+									}
+							});
+						});
+					})
+			});
+			$("#InsuranceAddPatient").click(function () {
+				var crypt = new JSEncrypt({ default_key_size: 1024 });
+				crypt.getKey();
+				var PublicKey = crypt.getPublicKey();
+				var PrivateKey = crypt.getPrivateKey();
+				$('#InsurancePPublicKey').val(PublicKey);
+				$('#InsurancePPrivateKey').val(PrivateKey);
+
+				var encryptedFirstNote = crypt.encrypt($('#InsurancePFirstNote').val());
+				console.log(encryptedFirstNote);
+
+				HissContract.addPatient(
+					$('#InsurancePAddress1').val(),
+					PublicKey,
+					encryptedFirstNote,
+					{ from: account, value: web3.toWei("0.07", 'ether') },
+					(e, myTxHash) => {
+						web3.eth.filter('latest', function (error, result) {
+							web3.eth.getBlock(result, (e, b) => {
+								var t = b.transactions
+								for (var i = 0; i < t.length; i++)
+									if (t[i] == myTxHash) {
+										alert("Пациент успешно добавлен");
+									}
+							});
+						});
+					})
+			});
+			$("#InsuranceShowPatientStatus").click(function () {
+				HissContract.isInsuranceActive.call(
+					$('#InsurancePAddress2').val(),
+					(err, res) => {
+						if (err != null) {
+							alert("Произошла ошибка при проверке статуса пациента: " + err);
+						} else {
+							if (res == true) {
+								alert('Страховка действительна');
+							} else {
+								alert('Страховка не действительна');
+							}
+						}
+					})
+			});
+			$("#InsuranceEnablePInsurance").click(function () {
+				HissContract.setInsuranceStatus(
+					$('#InsurancePAddress3').val(),
+					true,
+					(e, myTxHash) => {
+						web3.eth.filter('latest', function (error, result) {
+							web3.eth.getBlock(result, (e, b) => {
+								var t = b.transactions
+								for (var i = 0; i < t.length; i++)
+									if (t[i] == myTxHash) {
+										alert("Страховка активирована");
+									}
+							});
+						});
+					})
+			});
+			$("#InsuranceDisablePInsurance").click(function () {
+				HissContract.setInsuranceStatus(
+					$('#InsurancePAddress3').val(),
+					false,
+					(e, myTxHash) => {
+						web3.eth.filter('latest', function (error, result) {
+							web3.eth.getBlock(result, (e, b) => {
+								var t = b.transactions
+								for (var i = 0; i < t.length; i++)
+									if (t[i] == myTxHash) {
+										alert("Страховка деактивирована");
+									}
+							});
+						});
+					})
+			});
+
+			//Patient
+			$("#PatientButtonCheck").click(function () {
+				HissContract.isInsuranceActive.call(account, (e, r) => {
+					if (r == true) {
+						alert("Страховка действительна");
+					} else {
+						alert("Страховка не действительна");
+					}
+				})
+			});
+			$("#PatientButtonConsent").click(function () {
+				HissContract.consentToAddData($("#PatientHAddress").val(),
+					(e, myTxHash) => {
+						web3.eth.filter('latest', function (error, result) {
+							web3.eth.getBlock(result, (e, b) => {
+								var t = b.transactions
+								for (var i = 0; i < t.length; i++)
+									if (t[i] == myTxHash) {
+										alert("Добавлен")
+									}
+							})
+						})
+					})
+			});
+			$("#PatientButtonNumberOfNotes").click(function () {
+				HissContract.numberOfNotes.call(account,
+					(e, r) => {
+						alert("Количество записей для вашего адреса: " + r)
+					})
+			});
+			$("#PatientButtonHashes").click(function () {
+				HissContract.hashes.call(account,
+					$("#PatientNoteNumber").val() - 1,
+					(e, r) => {
+						var crypt = new JSEncrypt();
+						crypt.setPrivateKey($('#PatientPPrivateKey').val());
+						var uncrypted = crypt.decrypt(r);
+						alert(uncrypted);
+					})
+			});
+
+		});
 	};
 })(jQuery);
