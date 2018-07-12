@@ -66,6 +66,10 @@ input, select, textarea {
 	appearance: none;
 }
 
+div.centr{
+	margin-left: auto;
+	margin-right: auto;
+}
 /* Basic */
 
 	@-ms-viewport {
