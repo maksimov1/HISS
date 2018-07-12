@@ -50,12 +50,19 @@
 					<article id="content">
 						<header>
 							<h2>HISS. Страховой компании</h2>
-							<p>Легкий контроль доступа и просмотр записей.</p>
+							<p>Легкий контроль доступа и просмотр записей.
+									<ul>
+										<li>Источник достоверных данных об истории болезней и посещений мед.учереждений клиентами – ключевая информация при расчёте стоимости страховых услуг</li>
+										<li>Добавление в систему больниц, одобренных Вашей организацией</li>
+										<li>Легкое взаимодействие со страховками существующих пациентов и регистрация новых</li>
+									</ul>
+								</p>
 						</header>
-
-						<div>
-							<br/>
-							<br/>
+						<h3>Перед выполнением всех операций удостоверьтесь, что у вас работает Metamask.</h3>
+						<br>
+						<hr>
+						<br>
+						<div class="4u 12u$(small)">
 							<p>Медицинские Учреждения</p>
 							<input type="text" name="hAddress" id="hAddress" value="" placeholder="Введите eth адрес медицинского учреждения" size="150px" />
 							<input type="text" name="hDigitalSign" id="hDigitalSign" value="" placeholder="Цифровая подпись медицинского учреждения"  />
@@ -67,10 +74,10 @@
 							<input type="text" name="pAddress" id="pAddress" value="" placeholder="Введите eth адрес пациента" />
 							<input type="text" name="pFirstNote" id="pFirstNote" value="" placeholder="Информация о пациенте" />
 							<p>
-								<textarea class="form-control" placeholder="Приватный ключ пациента" id="pPrivateKey" rows="5"></textarea>
+								<textarea class="form-control" readonly placeholder="Приватный ключ пациента" id="pPrivateKey" rows="5"></textarea>
 							</p>
 							<p>
-								<textarea class="form-control" placeholder="Публичный ключ пациента" id="pPublicKey" rows="5"></textarea>
+								<textarea class="form-control" readonly placeholder="Публичный ключ пациента" id="pPublicKey" rows="5"></textarea>
 							</p>
 							<p>
 								<button id="addPatient">Подключить пациента</button>
