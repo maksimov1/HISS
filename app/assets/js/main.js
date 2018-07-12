@@ -160,7 +160,7 @@ import HissContractDesc from '../../../build/contracts/Hiss.json';
 			$("#DoctorButtonPHashes").click(function () {
 				HissContract.hashes.call(
 					$("#DoctorPAddressToAdding4").val(),
-					$("#DoctorNoteNumber").val() + 1,
+					$("#DoctorNoteNumber").val() - 1,
 					(e, r) => {
 						var crypt = new JSEncrypt();
 						crypt.setPrivateKey($('#DoctorPPrivateKey').val());
