@@ -112,20 +112,27 @@ import HissContractDesc from '../../../build/contracts/Hiss.json';
 						var crypt = new JSEncrypt();
 						crypt.setPublicKey(r);
 						var encryptedNote = crypt.encrypt($('#note').val());
-						HissContract.addNewNote(
-							$("#DoctorPAddressToAdding1").val(),
-							encryptedNote,
-							(e, myTxHash) => {
-								web3.eth.filter('latest', function (error, result) {
-									web3.eth.getBlock(result, (e, b) => {
-										var t = b.transactions
-										for (var i = 0; i < t.length; i++)
-											if (t[i] == myTxHash) {
-												alert("Запись добавлена")
-											}
+
+						buzz.upload(encryptedNote).then((hash) => {
+							let url = `http://swarm.hissbb.com/bzz-raw:/${hash}`
+							console.log(`Url --> ${url}`)
+							document.getElementById("DoctorSwarmUrlNote").innerHTML = url
+							document.getElementById("DoctorSwarmUrlNote").href = url
+							HissContract.addNewNote(
+								$("#DoctorPAddressToAdding1").val(),
+								hash,
+								(e, myTxHash) => {
+									web3.eth.filter('latest', function (error, result) {
+										web3.eth.getBlock(result, (e, b) => {
+											var t = b.transactions
+											for (var i = 0; i < t.length; i++)
+												if (t[i] == myTxHash) {
+													alert("Запись добавлена в блокчейн");
+												}
+										})
 									})
-								})
-							})
+								});
+						});
 					});
 			});
 			$("#DoctorButtonPSubmitMedFile").click(function () {
@@ -142,8 +149,22 @@ import HissContractDesc from '../../../build/contracts/Hiss.json';
 							buzz.upload(encryptedNote).then((hash) => {
 								let url = `http://swarm.hissbb.com/bzz-raw:/${hash}`
 								console.log(`Url --> ${url}`)
-								document.getElementById("swarmUrl").innerHTML = url
-								document.getElementById("swarmUrl").href = url
+								document.getElementById("DoctorSwarmUrlFile").innerHTML = url
+								document.getElementById("DoctorSwarmUrlFile").href = url
+								HissContract.addNewNote(
+									$("#DoctorPAddressToAdding2").val(),
+									hash,
+									(e, myTxHash) => {
+										web3.eth.filter('latest', function (error, result) {
+											web3.eth.getBlock(result, (e, b) => {
+												var t = b.transactions
+												for (var i = 0; i < t.length; i++)
+													if (t[i] == myTxHash) {
+														alert("Запись добавлена в блокчейн");
+													}
+											})
+										})
+									});
 							});
 						});
 				}
@@ -162,11 +183,16 @@ import HissContractDesc from '../../../build/contracts/Hiss.json';
 				HissContract.hashes.call(
 					$("#DoctorPAddressToAdding4").val(),
 					$("#DoctorNoteNumber").val() - 1,
-					(e, r) => {
+					(e, hash) => {
 						var crypt = new JSEncrypt();
 						crypt.setPrivateKey($('#DoctorPPrivateKey').val());
-						var uncrypted = crypt.decrypt(r);
-						alert(uncrypted);
+						//var uncrypted = crypt.decrypt(r);
+						//alert(uncrypted);
+						buzz.download(hash).then((file) => {
+							var uncrypted = crypt.decrypt(file);
+							console.log(uncrypted);
+							alert(uncrypted);
+						});
 					})
 			});
 
@@ -199,22 +225,28 @@ import HissContractDesc from '../../../build/contracts/Hiss.json';
 				var encryptedFirstNote = crypt.encrypt($('#InsurancePFirstNote').val());
 				console.log(encryptedFirstNote);
 
-				HissContract.addPatient(
-					$('#InsurancePAddress1').val(),
-					PublicKey,
-					encryptedFirstNote,
-					{ from: account, value: web3.toWei("0.07", 'ether') },
-					(e, myTxHash) => {
-						web3.eth.filter('latest', function (error, result) {
-							web3.eth.getBlock(result, (e, b) => {
-								var t = b.transactions
-								for (var i = 0; i < t.length; i++)
-									if (t[i] == myTxHash) {
-										alert("Пациент успешно добавлен");
-									}
-							});
+				buzz.upload(encryptedFirstNote).then((hash) => {
+					let url = `http://swarm.hissbb.com/bzz-raw:/${hash}`
+					console.log(`Url --> ${url}`)
+					document.getElementById("InsuranceSwarmUrlNote").innerHTML = url
+					document.getElementById("InsuranceSwarmUrlNote").href = url
+					HissContract.addPatient(
+						$("#InsurancePAddress1").val(),
+						PublicKey,
+						hash,
+						{ from: account, value: web3.toWei("0.07", 'ether') },
+						(e, myTxHash) => {
+							web3.eth.filter('latest', function (error, result) {
+								web3.eth.getBlock(result, (e, b) => {
+									var t = b.transactions
+									for (var i = 0; i < t.length; i++)
+										if (t[i] == myTxHash) {
+											alert("Пациент успешно добавлен");
+										}
+								})
+							})
 						});
-					})
+				});
 			});
 			$("#InsuranceShowPatientStatus").click(function () {
 				HissContract.isInsuranceActive.call(
@@ -297,14 +329,18 @@ import HissContractDesc from '../../../build/contracts/Hiss.json';
 			$("#PatientButtonHashes").click(function () {
 				HissContract.hashes.call(account,
 					$("#PatientNoteNumber").val() - 1,
-					(e, r) => {
+					(e, hash) => {
 						var crypt = new JSEncrypt();
 						crypt.setPrivateKey($('#PatientPPrivateKey').val());
-						var uncrypted = crypt.decrypt(r);
-						alert(uncrypted);
-					})
+						//var uncrypted = crypt.decrypt(r);
+						//alert(uncrypted);
+						buzz.download(hash).then((file) => {
+							var uncrypted = crypt.decrypt(file);
+							console.log(uncrypted);
+							alert(uncrypted);
+						});
 			});
-
 		});
+	});
 	};
 })(jQuery);
