@@ -67,11 +67,11 @@
 							<p>1. Введите eth адрес пациента</p>
 							<p>2. Введите текст записи в поле</p>
 							<p>3. Нажмите «Добавить запись»</p>
-							<input type="text" name="pAddressToAdding" id="pAddressToAdding1" value="" placeholder="Введите eth адрес пациента" size="40">
+							<input type="text" name="pAddressToAdding" id="pAddressToAdding1" value="" placeholder="Введите eth адрес пациента" size="45">
 							<br>
-							<input type="text" name="note" id="note" value="" placeholder="Введите запись" size="40">
+							<input type="text" name="note" id="note" value="" placeholder="Введите запись" size="45">
 							<br>
-							<input type="button" id="buttonpAddNote" value="Добавить запись" />
+							<button id="buttonpAddNote">Добавить запись</button>
 							<br>
 							<br>
 							<hr>
@@ -79,9 +79,9 @@
 							<p>Для того, чтобы узнать, сколько записей о пациенте содержится в базе:</p>
 							<p>1. Введите eth адрес пациента</p>
 							<p>2. Нажмите «Количество записей пациента»</p>
-							<input type="text" name="pAddressToAdding" id="pAddressToAdding2" value="" placeholder="Введите eth адрес пациента" size="40">
+							<input type="text" name="pAddressToAdding" id="pAddressToAdding2" value="" placeholder="Введите eth адрес пациента" size="45">
 							<br>
-							<input type="button" id="buttonNumberOfNotes" value="Количество записей пациента" />
+							<button id="buttonNumberOfNotes">Количество записей пациента</button>
 							<br>
 							<br>
 							<hr>
@@ -90,15 +90,17 @@
 							<p>1. Введите eth адрес пациента</p>
 							<p>2. Введите номер записи</p>
 							<p>3. Нажмите «Найти запись»</p>
-							<input type="text" name="pAddressToAdding" id="pAddressToAdding3" value="" placeholder="Введите eth адрес пациента" size="40">
+							<input type="text" name="pAddressToAdding" id="pAddressToAdding3" value="" placeholder="Введите eth адрес пациента" size="45">
 							<br>
-							<input type="text" name="noteNumber" id="noteNumber" value="" placeholder="Введите номер записи" size="40">
+							<input type="text" name="noteNumber" id="noteNumber" value="" placeholder="Введите номер записи" size="45">
 							<br>
 							<p>
-								<textarea class="form-control" placeholder="Приватный ключ пациента для дешифрации записей" id="pPrivateKey" rows="5"></textarea>
+								<textarea class="form-control" placeholder="Приватный ключ пациента для дешифрации записей" id="pPrivateKey" rows="5" width="45"></textarea>
 							</p>
+							<button id="buttonHashes">Найти запись</button>
 							<br>
-							<input type="button" id="buttonHashes" value="Найти запись" />
+							<br>
+							<hr>
 						</div>
 					</article>
 				</div>

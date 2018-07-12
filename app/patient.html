@@ -4,7 +4,6 @@
 <head>
 	<title>Пациенту</title>
 	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
-
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 	<link rel="stylesheet" href="assets/css/main.css" />
@@ -65,7 +64,7 @@
 						<br>
 						<div class="4u 12u$(small)">
 							<p>Вы можете узнать о состоянии вашего страхового полиса, нажав на «Проверить страховку».</p>
-							<input type="button" id="buttonCheck" value="Проверить страховку" />
+							<button id="buttonCheck">Проверить страховку</button>
 							<br>
 							<br>
 							<hr>
@@ -73,15 +72,15 @@
 							<p>Для разрешения медучреждению добавить запись в вашу историю:</p>
 							<p>1. Введите адрес медицинского учреждения в поле</p>
 							<p>2. Нажмите «Добавить разрешение для медицинского учреждения</p>
-							<input type="text" name="hAddress" id="hAddress" value="" placeholder="Введите eth адрес медицинского учреждения" size="40">
+							<input type="text" name="hAddress" id="hAddress" value="" placeholder="Введите eth адрес медицинского учреждения">
 							<br>
-							<input type="button" id="buttonConsent" value="Добавить разрешение для медицинского учреждения" />
+							<button id="buttonConsent">Добавить разрешение для медицинского учреждения</button>
 							<br>
 							<br>
 							<hr>
 							<br>
 							<p>Вы можете узнать, сколько записей о вас содержится в базе нажав на «Количество моих записей»</p>
-							<input type="button" id="buttonNumberOfNotes" value="Количество моих записей" />
+							<button id="buttonNumberOfNotes">Количество моих записей</button>
 							<br>
 							<br>
 							<hr>
@@ -89,11 +88,11 @@
 							<p>Для просмотра конкретной записи:</p>
 							<p>1. Введите номер записи</p>
 							<p>2. Нажмите «Найти запись»</p>
-								<textarea class="form-control" placeholder="Приватный ключ пациента для дешифровки записей" id="pPrivateKey" rows="5"></textarea>
+							<textarea class="form-control" placeholder="Приватный ключ пациента для дешифровки записей" id="pPrivateKey" rows="5"></textarea>
 							<br>
 							<input type="text" name="noteNumber" id="noteNumber" value="" placeholder="Введите номер записи" size="25">
 							<br>
-							<input type="button" id="buttonHashes" value="Найти запись" />
+							<button id="buttonHashes">Найти запись</button>
 							<br>
 							<hr>
 						</div>
