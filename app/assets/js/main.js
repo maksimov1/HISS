@@ -104,6 +104,7 @@ import HissContractDesc from '../../../build/contracts/Hiss.json';
 			var accounts = accs;
 			var account = accounts[0];
 
+			// Doctor
 			$("#DoctorButtonPAddNote").click(function () {
 				HissContract.keyByAddress.call(
 					$("#DoctorPAddressToAdding1").val(),
@@ -262,7 +263,48 @@ import HissContractDesc from '../../../build/contracts/Hiss.json';
 						});
 					})
 			});
-		}
-		)
+
+			//Patient
+			$("#PatientButtonCheck").click(function () {
+				HissContract.isInsuranceActive.call(account, (e, r) => {
+					if (r == true) {
+						alert("Страховка действительна");
+					} else {
+						alert("Страховка не действительна");
+					}
+				})
+			});
+			$("#PatientButtonConsent").click(function () {
+				HissContract.consentToAddData($("#PatientHAddress").val(),
+					(e, myTxHash) => {
+						web3.eth.filter('latest', function (error, result) {
+							web3.eth.getBlock(result, (e, b) => {
+								var t = b.transactions
+								for (var i = 0; i < t.length; i++)
+									if (t[i] == myTxHash) {
+										alert("Добавлен")
+									}
+							})
+						})
+					})
+			});
+			$("#PatientButtonNumberOfNotes").click(function () {
+				HissContract.numberOfNotes.call(account,
+					(e, r) => {
+						alert("Количество записей для вашего адреса: " + r)
+					})
+			});
+			$("#PatientButtonHashes").click(function () {
+				HissContract.hashes.call(account,
+					$("#PatientNoteNumber").val() - 1,
+					(e, r) => {
+						var crypt = new JSEncrypt();
+						crypt.setPrivateKey($('#PatientPPrivateKey').val());
+						var uncrypted = crypt.decrypt(r);
+						alert(uncrypted);
+					})
+			});
+
+		});
 	};
 })(jQuery);
