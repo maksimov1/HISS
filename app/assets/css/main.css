@@ -1754,6 +1754,7 @@ div.centr{
 		display: inline-block;
 		outline: 0;
 		border: 0;
+		
 	}
 
 		.image img {
@@ -2077,6 +2078,7 @@ div.centr{
 
 	.image-wrapper {
 		position: relative;
+		z-index: 2;
 	}
 
 		.image-wrapper .image {
