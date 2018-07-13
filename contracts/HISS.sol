@@ -1,17 +1,79 @@
 pragma solidity ^0.4.24;
 
-contract Hiss {
-    address public owner;
+import 'openzeppelin-solidity/contracts/ownership/Ownable.sol';
+import 'openzeppelin-solidity/contracts/ownership/rbac/RBAC.sol';
+
+contract HISSRBAC is RBAC, Ownable {
+  string public constant ROLE_ADMIN = "admin";
+  string public constant ROLE_INSURANCE_COMPANY = "insurance_company";
+  string public constant ROLE_PATIENT = "patient";
+  string public constant ROLE_HOSPITAL = "hospital";
+  string public constant ROLE_UNKNOWN = "unknown";
+
+  modifier isAdmin()
+  {
+    checkRole(msg.sender, ROLE_ADMIN);
+    _;
+  }
+
+  modifier isInsuranceCompany()
+  {
+    checkRole(msg.sender, ROLE_INSURANCE_COMPANY);
+    _;
+  }
+
+  modifier isPatient()
+  {
+    checkRole(msg.sender, ROLE_PATIENT);
+    _;
+  }
+
+  modifier isHospital()
+  {
+    checkRole(msg.sender, ROLE_HOSPITAL);
+    _;
+  }
+
+  constructor(address[] _admins)
+  public
+  {
+    addRole(msg.sender, ROLE_ADMIN);
+
+    for (uint256 i = 0; i < _admins.length; i++) {
+      addRole(_admins[i], ROLE_ADMIN);
+    }
+  }
+
+  /**
+   * @dev add a role to an address
+   * @param addr address
+   * @param roleName the name of the role
+   */
+  function adminAddRole(address addr, string roleName)
+    isAdmin
+    public
+  {
+    addRole(addr, roleName);
+  }
+
+  /**
+   * @dev remove a role from an address
+   * @param addr address
+   * @param roleName the name of the role
+   */
+  function adminRemoveRole(address addr, string roleName)
+    isAdmin
+    public
+  {
+    removeRole(addr, roleName);
+  }
+}
+
+contract Hiss is HISSRBAC {
     uint public balance;
     
     uint public min = 50000000000000000;
     uint public max = 100000000000000000;
-    
-    constructor () public {
-        owner = msg.sender;
-    }
-
-    enum typeOfMembership {NotRegistered, Patient, Hospital, InsuranceCompany} //тип участия
     
     mapping(address => mapping(uint => string)) public hashes; //получаем хеш данных по адреу и номеру записи
     
@@ -25,34 +87,11 @@ contract Hiss {
 
     mapping(address => string) public hospitalSign; //цифровая подись больниц, для подписи записей, добавляемых в базу (пока не используется)
     
-    mapping(address => typeOfMembership) public typeByAddress; //получаем тип участия по адресу участника
-    
-    modifier isHospital() {
-        require(typeByAddress[msg.sender] == typeOfMembership.Hospital);
-        _;
-    }
-    
-    modifier isPatient() {
-        require(typeByAddress[msg.sender] == typeOfMembership.Patient);
-        _;
-    }
-    
-    modifier isInsuranceCompany() {
-        require(typeByAddress[msg.sender] == typeOfMembership.InsuranceCompany);
-        _;
-    }
-    
-    modifier isOwner() {
-        require(msg.sender == owner);
-        _;
-    }
-    
     //владелец сервиса добавляет страховые
-    function addInsuranceCompany (address addr) public isOwner {
+    function addInsuranceCompany (address addr) public isAdmin {
         require(typeByAddress[addr] == typeOfMembership.NotRegistered);
         typeByAddress[addr] = typeOfMembership.InsuranceCompany;
     }
-    
     
     //страховые добавляют пациентов
     function addPatient (address addr, string publicKey, string firstNote) public payable isInsuranceCompany {
@@ -94,14 +133,14 @@ contract Hiss {
     }
     
     //вывод средств на кошелек владельца сервиса
-    function withdrawal(uint amount) public isOwner {
+    function withdrawal(uint amount) public Ownable {
         require(amount <= balance);
         owner.transfer(amount);
         balance -= amount;
     }
     
     //изменение минимальной и максимальной стоимостей услуг
-    function setLimits(uint _min, uint _max) public isOwner {
+    function setLimits(uint _min, uint _max) public onlyOwner {
         min = _min;
         max = _max;
     }
