@@ -10,25 +10,25 @@ contract HISSRBAC is RBAC, Ownable {
   string public constant ROLE_HOSPITAL = "hospital";
   string public constant ROLE_UNKNOWN = "unknown";
 
-  modifier isAdmin()
+  modifier onlyAdmin()
   {
     checkRole(msg.sender, ROLE_ADMIN);
     _;
   }
 
-  modifier isInsuranceCompany()
+  modifier onlyInsuranceCompany()
   {
     checkRole(msg.sender, ROLE_INSURANCE_COMPANY);
     _;
   }
 
-  modifier isPatient()
+  modifier onlyPatient()
   {
     checkRole(msg.sender, ROLE_PATIENT);
     _;
   }
 
-  modifier isHospital()
+  modifier onlyHospital()
   {
     checkRole(msg.sender, ROLE_HOSPITAL);
     _;
@@ -50,7 +50,7 @@ contract HISSRBAC is RBAC, Ownable {
    * @param roleName the name of the role
    */
   function adminAddRole(address addr, string roleName)
-    isAdmin
+    onlyAdmin
     public
   {
     addRole(addr, roleName);
@@ -62,7 +62,7 @@ contract HISSRBAC is RBAC, Ownable {
    * @param roleName the name of the role
    */
   function adminRemoveRole(address addr, string roleName)
-    isAdmin
+    onlyAdmin
     public
   {
     removeRole(addr, roleName);
@@ -88,13 +88,13 @@ contract Hiss is HISSRBAC {
     mapping(address => string) public hospitalSign; //цифровая подись больниц, для подписи записей, добавляемых в базу (пока не используется)
     
     //владелец сервиса добавляет страховые
-    function addInsuranceCompany (address addr) public isAdmin {
+    function addInsuranceCompany (address addr) public onlyAdmin {
         require(typeByAddress[addr] == typeOfMembership.NotRegistered);
         typeByAddress[addr] = typeOfMembership.InsuranceCompany;
     }
     
     //страховые добавляют пациентов
-    function addPatient (address addr, string publicKey, string firstNote) public payable isInsuranceCompany {
+    function addPatient (address addr, string publicKey, string firstNote) public payable onlyInsuranceCompany {
         require(msg.value >= min && msg.value <= max);
         require(typeByAddress[addr] == typeOfMembership.NotRegistered);
         typeByAddress[addr] = typeOfMembership.Patient;
@@ -104,7 +104,7 @@ contract Hiss is HISSRBAC {
         balance += msg.value;
     }
     //страховые добавляют больницы
-    function addHospital (address addr, string digitalSign) public payable isInsuranceCompany {
+    function addHospital (address addr, string digitalSign) public payable onlyInsuranceCompany {
         require(msg.value >= min && msg.value <= max);
         require(typeByAddress[addr] == typeOfMembership.NotRegistered);
         typeByAddress[addr] = typeOfMembership.Hospital;
@@ -112,19 +112,19 @@ contract Hiss is HISSRBAC {
         balance += msg.value;
     }
     //старховые управляют страховкой пациента
-    function setInsuranceStatus (address addr, bool flag) public isInsuranceCompany {
+    function setInsuranceStatus (address addr, bool flag) public onlyInsuranceCompany {
         require(typeByAddress[addr] == typeOfMembership.Patient);
         isInsuranceActive[addr] = flag;
     }
     
     //пациент разрешает добавлять новую запись больнице
-    function consentToAddData(address addr) public isPatient {
+    function consentToAddData(address addr) public onlyPatient {
         require(typeByAddress[addr] == typeOfMembership.Hospital);
         accessByHospital[msg.sender][addr] = true;
     }
     
     //больница добавляет данные только с разрешения
-    function addNewNote(address addr, string note) public isHospital {
+    function addNewNote(address addr, string note) public onlyHospital {
         require(typeByAddress[addr] == typeOfMembership.Patient);
         require(accessByHospital[addr][msg.sender] == true);
         hashes[addr][numberOfNotes[addr]] = note;
@@ -133,7 +133,7 @@ contract Hiss is HISSRBAC {
     }
     
     //вывод средств на кошелек владельца сервиса
-    function withdrawal(uint amount) public Ownable {
+    function withdrawal(uint amount) public onlyOwner {
         require(amount <= balance);
         owner.transfer(amount);
         balance -= amount;
