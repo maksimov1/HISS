@@ -89,15 +89,17 @@ contract Hiss is HISSRBAC {
     
     //владелец сервиса добавляет страховые
     function addInsuranceCompany (address addr) public onlyAdmin {
-        require(typeByAddress[addr] == typeOfMembership.NotRegistered);
-        typeByAddress[addr] = typeOfMembership.InsuranceCompany;
+        //require(typeByAddress[addr] == typeOfMembership.NotRegistered);
+
+	addRole(addr, ROLE_INSURANCE_COMPANY);
     }
     
     //страховые добавляют пациентов
     function addPatient (address addr, string publicKey, string firstNote) public payable onlyInsuranceCompany {
         require(msg.value >= min && msg.value <= max);
-        require(typeByAddress[addr] == typeOfMembership.NotRegistered);
-        typeByAddress[addr] = typeOfMembership.Patient;
+        //require(typeByAddress[addr] == typeOfMembership.NotRegistered);
+
+	addRole(addr, ROLE_PATIENT);
         keyByAddress[addr] = publicKey;
         hashes[addr][0] = firstNote; // первое посещение
         numberOfNotes[addr]++;
@@ -106,26 +108,27 @@ contract Hiss is HISSRBAC {
     //страховые добавляют больницы
     function addHospital (address addr, string digitalSign) public payable onlyInsuranceCompany {
         require(msg.value >= min && msg.value <= max);
-        require(typeByAddress[addr] == typeOfMembership.NotRegistered);
-        typeByAddress[addr] = typeOfMembership.Hospital;
+        //require(typeByAddress[addr] == typeOfMembership.NotRegistered);
+
+	addRole(addr, ROLE_HOSPITAL);
         hospitalSign[addr] = digitalSign;
         balance += msg.value;
     }
     //старховые управляют страховкой пациента
     function setInsuranceStatus (address addr, bool flag) public onlyInsuranceCompany {
-        require(typeByAddress[addr] == typeOfMembership.Patient);
+	checkRole(addr, ROLE_PATIENT);
         isInsuranceActive[addr] = flag;
     }
     
     //пациент разрешает добавлять новую запись больнице
     function consentToAddData(address addr) public onlyPatient {
-        require(typeByAddress[addr] == typeOfMembership.Hospital);
+	checkRole(addr, ROLE_HOSPITAL);
         accessByHospital[msg.sender][addr] = true;
     }
     
     //больница добавляет данные только с разрешения
     function addNewNote(address addr, string note) public onlyHospital {
-        require(typeByAddress[addr] == typeOfMembership.Patient);
+	checkRole(addr, ROLE_PATIENT);
         require(accessByHospital[addr][msg.sender] == true);
         hashes[addr][numberOfNotes[addr]] = note;
         numberOfNotes[addr]++;
